@@ -1,0 +1,28 @@
+Scala
+http://jaxenter.com/dotty-scala-without-the-backwards-compatibility-issues-107568.html
+
+IDE
+	-eclipse: permission denied, web->les autres ont pareil, ca marche pas
+		mais la procedure trouvee sur IDEs installe qd mm GHCi:
+		NON ca devait etre m'install d'haskell lui-mm
+	-sublime text 3: install package control, install sublime haskell
+
+Getting started:
+		https://en.wikibooks.org/wiki/Haskell/Getting_set_up
+
+Bons points
+-langage vraiment sympa
+-msgs d'err excellents:  
+	Not in scope: `nbRealroots'
+ 	Perhaps you meant `nbRealRoots' (line 23)
+
+
+Crash frequent: surtout ne pas faire Ctrl+C (mais ca px crasher qd mm sans..)
+	Prelude> :l Vr
+	ghc.exe: panic! (the 'impossible' happened)
+	  (GHC version 7.8.3 for x86_64-unknown-mingw32):
+	        thread blocked indefinitely in an MVar operation
+	Please report this as a GHC bug:  http://www.haskell.org/ghc/reportabug
+-->Je suis pas le seul, mais les reponses internet sont de la merde (genre c'est limite une feature que ca crashe sur windows, compile a partir des sources etc). Ca commence bien, on dirait que comme pas mal de langages c'est la merde pour developper sur windows (ca a pas l'air mieux sur mac cf google au moins pour ce msg -> un point en moins pour haskell, vive java).
+
+f x = x + 2 OK ds source mais KO ds ligne de cmd --> let f x = x + 2 OK ds ligne de cmd
