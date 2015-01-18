@@ -40,6 +40,8 @@ Getting started:
 		eclipse ca marche pas quelle surprise!
 		edition ds sublime text 3 + sublime haskell (install package control avant)
 		je compile et run ds GHCi		
+		les soluces sont la: https://en.wikibooks.org/wiki/Haskell/Solutions/Lists_and_tuples
+		j'en suis a https://en.wikibooks.org/wiki/Haskell/Next_steps
 
 Bons points:
 	-pour l'instant vraiment sympa a l'usage
