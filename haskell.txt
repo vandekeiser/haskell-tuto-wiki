@@ -1,28 +1,55 @@
-Scala
-http://jaxenter.com/dotty-scala-without-the-backwards-compatibility-issues-107568.html
+Pour clore le sujet Scala, j'ai fait un google sur scala version fragility, scala version hell:
+2011: 
+	-http://lift.la/scalas-version-fragility-make-the-enterprise
+    -https://gist.github.com/anonymous/1406238
+    -http://ceki.blogspot.fr/2011/08/is-scala-trustworthy.html
+    -https://gridgaintech.wordpress.com/2011/12/11/offbeat-scala-by-the-end-of-2011-no-drama-but-frustration-is-growing/
+2012: 
+	-http://blog.ometer.com/2012/01/24/the-java-ecosystem-and-scala-abi-versioning/
+	Description eloquente de l'enfer des versions, propose une solution qui me semble bonne. Point interessant, le mm probleme se pose en java mais de facon BEAUCOUP moins genante
+2014: 
+	-http://blog.goodstuff.im/scala_priorities
+	-Plein d'autres articles sur le mm theme en 2014, aucune amelioration depuis 2011
+L'avenir?	
+	-Un fork dans ce but: http://jaxenter.com/dotty-scala-without-the-backwards-compatibility-issues-107568.html, mais c'est un fork
+	-https://skillsmatter.com/conferences/1948-scala-exchange-2014#program
+	La keynote etait sur ce theme: "The Binary Compatibility Challenge" Martin Odersky, peut-etre que plus tard..?
+Choisissez plutot un autre langage	
+	-Vous etes surs de vouloir investir du temps la dedans? OK c'est un bon exercice et le langage est fun, mais jusqu'a ce que ce pb soit resolu, c'est trop dangereux en entreprise (pas maintenable, je deconseillerais a un client) et trop enervant en projet jouet (sauf si on n'utilise QUE le SDK, sans aucune lib, et en buildant manuellement). Dépéchez-vous de ne rien faire, et attendez que les problèmes soient résolus (s'ils le sont un jour). Wait and see.
+	-En attendant y'a plein d'autres langages à explorer (je part du principe que tt le monde connait deja Java et JS).
+		-Dans les langages JVM, Groovy cohabite très bien avec Java et est vraiment utile, Clojure monte bien (mais j'ai du mal), Ceylon est très prometteur (système de typage très intéressant) et garantit désormais la compatibilité binaire.
+		-On devrait pas oublier la plateforme .NET qui est maintenant open-source donc concerne Zenika. C# est excellent (j'ai pratiqué 4.5 sur projet), F# je n'ai pas regardé mais de bons échos.
+		-Dans les langages fonctionnels, Haskell et Scheme sont mes favoris. Les craftmen, on a mis "programmation fonctionnelle" dans notre liste donc on pourrait s'en choisir un (j'ai commencé Haskell, j'envoie un autre mail)
+		-Dans les langages systèmes, Go est utile pour Docker et Rust a l'air excellent
+		-Pourquoi pas qqch de complètement différent, comme la programmation logique avec Prolog?
+Bref c'est pas la peine de faire une fixette sur Scala.
 
-IDE
-	-eclipse: permission denied, web->les autres ont pareil, ca marche pas
-		mais la procedure trouvee sur IDEs installe qd mm GHCi:
-		NON ca devait etre m'install d'haskell lui-mm
-	-sublime text 3: install package control, install sublime haskell
+Haskell
+	fonctionnel?          OUI
+	pattern matching?     OUI
+	version fragility?    non? je vois personne hurler sur le net
+	implementation JVM    NON (mais ca changera un peu)
+-->ok essayons haskell
+
 
 Getting started:
-		https://en.wikibooks.org/wiki/Haskell/Getting_set_up
+		install sur win 7 sans pb, installe GHCi.
+		https://www.haskell.org/haskellwiki/Learning_Haskell
+		je choisit le tuto wiki:
+			https://en.wikibooks.org/wiki/Haskell/Getting_set_up (chapitre 0)
+		eclipse ca marche pas quelle surprise!
+		edition ds sublime text 3 + sublime haskell (install package control avant)
+		je compile et run ds GHCi		
 
-Bons points
--langage vraiment sympa
--msgs d'err excellents:  
-	Not in scope: `nbRealroots'
- 	Perhaps you meant `nbRealRoots' (line 23)
+Bons points:
+	-pour l'instant vraiment sympa a l'usage
+	-msgs d'err excellents:  
+		Not in scope: `nbRealroots'
+	 	Perhaps you meant `nbRealRoots' (line 23)
 
+Mauvais points:
+	-Crash si Ctrl+C 
+		-->Je suis pas le seul, on dirait que comme pas mal de langages c'est pas l'ideal pour developper sur windows (ca a pas l'air mieux sur mac cf google)
 
-Crash frequent: surtout ne pas faire Ctrl+C (mais ca px crasher qd mm sans..)
-	Prelude> :l Vr
-	ghc.exe: panic! (the 'impossible' happened)
-	  (GHC version 7.8.3 for x86_64-unknown-mingw32):
-	        thread blocked indefinitely in an MVar operation
-	Please report this as a GHC bug:  http://www.haskell.org/ghc/reportabug
--->Je suis pas le seul, mais les reponses internet sont de la merde (genre c'est limite une feature que ca crashe sur windows, compile a partir des sources etc). Ca commence bien, on dirait que comme pas mal de langages c'est la merde pour developper sur windows (ca a pas l'air mieux sur mac cf google au moins pour ce msg -> un point en moins pour haskell, vive java).
-
-f x = x + 2 OK ds source mais KO ds ligne de cmd --> let f x = x + 2 OK ds ligne de cmd
+Surprises:
+	-f x = x + 2 OK ds source mais KO ds ligne de cmd, il faut faire let f x = x + 2

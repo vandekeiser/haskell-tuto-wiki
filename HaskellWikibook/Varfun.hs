@@ -39,3 +39,6 @@ xor p q = (p || q) && not (p && q)
 uppercase, lowercase :: String -> String
 uppercase = map toUpper
 lowercase = map toLower
+
+shoutHello :: String -> String
+shoutHello x = uppercase ("hello " ++ x ++ "!!!")
