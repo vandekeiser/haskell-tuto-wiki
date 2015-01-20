@@ -107,3 +107,51 @@ egal = (==) 3 (length [1, 2, 3])
 --3 est un Eq, length [1, 2, 3] est un Int
 -- Int n'est tjrs pas polymorphique mais c'est un Eq 
 -- (dans le cas précédent Int n'etait pas un Fractional)
+
+sign x = if x < 0 then -1
+	     else if x > 0 then 1
+	     else 0
+sign2 x
+	| x < 0     = -1
+	| x > 0     = 1
+	| otherwise = 0	     
+
+pts :: Int -> Int 
+--Compile pas!!! les espaces sont significatifs??!!
+--	pts 1 = 10
+{-Oui! Plus bas: 
+"Because indentation matters syntactically in Haskell, 
+you need to be careful about whether you are using tabs or spaces. 
+By far the best solution is to configure your text editor 
+to insert two or four spaces in place of tabs. 
+If you keep tabs as distinct, at least ensure that your tabs have always the same length, 
+or you're likely to run into trouble."-}
+pts 1 = 10
+pts 2 =  6
+pts x
+    | x <= 6    = 7 - x
+    | otherwise = 0	
+
+myor :: Bool -> Bool -> Bool
+myor False False  = False
+myor _     _      = True
+
+fst' :: (a, b) -> a
+fst' (x, _) = x
+snd' :: (a, b) -> b
+snd' (_, y) = y
+
+head' :: [a] -> a
+head' (h : _) = h
+head' []      = error "empty list"
+tail' :: [a] -> [a]
+tail' (_ : t) = t
+tail' []      = error "empty list"
+
+
+roots :: Double -> Double -> Double -> (Double, Double)
+roots a b c = 
+    let disc = sqrt(b * b - 4 * a * c)
+        two_as = 2 * a
+    in ((-b -disc) / two_as, 
+        (-b + disc) / two_as)
