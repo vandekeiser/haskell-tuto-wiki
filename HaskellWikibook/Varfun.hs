@@ -199,13 +199,21 @@ classifyUserWrtHaskell :: IO ()
 classifyUserWrtHaskell = do
     putStrLn "Votre nom?"   
     nom <- getLine
+    if nom == "Simon"
+        then putStrLn "Gourou"
+        else putStrLn "Pekin lambda"
+
     {-classe
+    putStrLn "Pekin lambda"
         | read nom == "Simon" = "Gourou"
         | otherwise = "Pekin lambda"-}
     {-classe = if read nom == "Simon" then "Gourou"    
         else "Pekin lambda"-}
-    putStrLn (classe nom)
-        where classe n = if n == "Simon" then "Gourou" else "Pekin lambda"
+    {-putStrLn (classe nom)
+        where classe n
+            | n == "Simon" = "Gourou" 
+            | otherwise = "Pekin lambda"-}
+
 
 {-sign x = if x < 0 then -1
          else if x > 0 then 1
