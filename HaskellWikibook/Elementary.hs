@@ -36,7 +36,27 @@ mult _ 0 = 0
 mult x 1 = x
 mult x y = x + (mult x (y - 1))
 
---power x n
 power x 0 = 1
 power x 1 = x
 power x n = x * power x (n - 1)
+
+plusOne x = x + 1
+addition x 0 = x
+addition x y = plusOne (addition x (y - 1))
+
+{-(Harder) Implement the function log2, 
+which computes the integer log (base 2) of its argument. 
+That is, log2 computes 
+the exponent of the largest power of 2 
+which is less than or equal to its argument. 
+For example, log2 16 = 4, log2 11 = 3, and log2 1 = 0.-}
+--             2^  4 =16,   2^  3 = 8,       2^ 0 = 1 
+log2 :: Int -> Int --pour etre sur que la division par 2 est entiere
+log2 1 = 0
+log2 2 = 1
+--log2 n = 1 + log2 (/ n 2) Fractional result
+log2 n = 1 + log2 (div n 2) 
+
+
+
+
