@@ -201,7 +201,11 @@ classifyUserWrtHaskell = do
     nom <- getLine
     if nom == "Simon"
         then putStrLn "Gourou"
-        else putStrLn "Pekin lambda"
+        else if nom == "John" 
+            then putStrLn "Gourou"
+            else if nom == "Phil" 
+                then putStrLn "Gourou"
+                else putStrLn "Pekin lambda"
 
     {-classe
     putStrLn "Pekin lambda"
