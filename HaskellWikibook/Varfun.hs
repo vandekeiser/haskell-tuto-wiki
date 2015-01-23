@@ -226,3 +226,7 @@ classifyUserWrtHaskell3 = do
             if n=="Simon" || n=="Phil" || n=="John"
                 then "Gourou"
                 else "Pekin lambda"        
+
+
+-- do = cree un bloc action
+-- action = do keyword
