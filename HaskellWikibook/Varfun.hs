@@ -205,4 +205,9 @@ classifyUserWrtHaskell = do
     {-classe = if read nom == "Simon" then "Gourou"    
         else "Pekin lambda"-}
     putStrLn (classe nom)
-        where classe n = if n == "Simon" then "Gourou" else "Pekin lambda"       
+        where classe n = if n == "Simon" then "Gourou" else "Pekin lambda"
+
+{-sign x = if x < 0 then -1
+         else if x > 0 then 1
+         else 0
+-}
