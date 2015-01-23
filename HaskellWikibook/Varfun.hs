@@ -1,6 +1,7 @@
 module Toto where
 
 import Data.Char
+import Data.List
 
 --comm 1
 area r = {-comm2-} pi * r ^ 2
@@ -155,3 +156,53 @@ roots a b c =
         two_as = 2 * a
     in ((-b -disc) / two_as, 
         (-b + disc) / two_as)
+
+fib = 1 : 1 : [ u + v | (u, v) <- zip fib (tail fib)]
+
+
+twiceSquare = twice . square
+    where twice x = 2 * x
+          square x = x * x
+
+-- import <module> (Prelude importé automatiqt)
+-- mvn = cabal, maven central = hackage, javadoc = hoogle
+-- :m +Data.List
+testpermutations = permutations "Prelude"          
+
+revWords :: String -> String
+revWords = unwords . reverse . words
+
+{-- putStrLn "ffffffff"
+ putStrLn :: String -> IO ()       action IO qui retourne rien/void/Unit
+ :t getLine
+ getLine :: IO String
+--}
+
+--The final action defines the type of the whole do block
+magIkEenBier :: IO ()
+magIkEenBier = do
+        putStrLn "Welke biere?"
+        biere <- getLine
+        putStrLn "Halv of pint?"
+        vol <- getLine
+        putStrLn ("Has u bleeft, uwe " ++ biere ++ " " ++ vol)
+
+triangleArea :: IO ()
+triangleArea = do
+    putStrLn "Base?"
+    base <- getLine --KO de mettre read ici, read attend un String pas un IO
+    putStrLn "Height?"
+    height <- getLine
+    putStrLn ("Area is: " ++ show(read base * read height / 2))
+
+classifyUserWrtHaskell :: IO ()
+classifyUserWrtHaskell = do
+    putStrLn "Votre nom?"   
+    nom <- getLine
+    {-classe
+        | read nom == "Simon" = "Gourou"
+        | otherwise = "Pekin lambda"-}
+    {-classe = if read nom == "Simon" then "Gourou"    
+        else "Pekin lambda"-}
+    putStrLn (classe nom)
+        where classe n = if n == "Simon" then "Gourou" else "Pekin lambda"       
