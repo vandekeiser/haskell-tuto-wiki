@@ -155,3 +155,5 @@ roots a b c =
         two_as = 2 * a
     in ((-b -disc) / two_as, 
         (-b + disc) / two_as)
+
+fib = 1 : 1 : [ a + b | (a, b) <- zip fib (tail fib)]
