@@ -4,6 +4,11 @@ factByAcc n = acc n 1
         | cnt <= 1   = res
         | otherwise  = acc (cnt - 1) (cnt * res)
 
+factByAcc2 n = acc n 1 where
+    acc cnt res
+        | cnt <= 1   = res
+        | otherwise  = acc (cnt - 1) (cnt * res)        
+
 fact1 n = 
     if n < 0 then error "cannot be < 0"
     else if n == 0 then 1
