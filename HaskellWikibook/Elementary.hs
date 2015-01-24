@@ -95,3 +95,45 @@ length3 l = acc 0 l
     where
         acc n []    = n 
         acc n (h:t) = acc (n+1) t
+
+double :: Num(a) => [a] -> [a]
+double [] = []
+double (h:t) = 2*h : (double t)
+
+mul :: Num a => a -> [a] -> [a]
+mul _ []    = []
+mul k (h:t) = (k*h) : (mul k t)
+
+{-takeInt returns the first n items in a list. 
+So takeInt 4 [11,21,31,41,51,61] returns [11,21,31,41]-}
+ttake :: Int -> [a] -> [a]
+ttake 0 _    = []
+ttake n (h:t) = h : (ttake (n-1) t)
+ttake _ []    = error ("no such element")
+
+{-dropInt drops the first n items in a list and returns the rest. 
+so dropInt 3 [11,21,31,41,51] returns [41,51].-}
+ddrop :: Int -> [a] -> [a]
+ddrop 0 liste = liste
+ddrop n (h:t) = ddrop (n-1) t
+ddrop _ []    = error ("no such element")
+
+{-sumInt returns the sum of the items in a list.-}
+ssum :: Num a => [a] -> a
+ssum (h:t) = h + ssum (t)
+ssum []    = 0
+
+{-scanSum adds the items in a list and returns a list of the running totals. So: 
+   scanSum [2] returns [2]
+   scanSum [2,3] returns [2,5]
+   scanSum [2,3,4,5] returns [2,5,9,14]-}
+scanSum :: Num a => [a] -> [a]
+scanSum []     = []
+scanSum (h:t)  = acc 0 h t
+    where        
+        --acc somme hh tt = []
+        acc somme hh tt = []
+
+
+
+
