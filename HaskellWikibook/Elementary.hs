@@ -132,7 +132,7 @@ scanSum []     = []
 scanSum (h:t)  = acc 0 h t
     where        
         --acc somme hh tt = []
-        acc somme hh tt = []
+        acc somme hh tt = (hh+somme) : acc (hh+somme) hh tt
 
 
 
