@@ -195,7 +195,7 @@ In the expression: acc str []-}
             In the first argument of `fst', namely `hlength'
             In the second argument of `(==)', namely `(fst hlength)'-}
             if (hstr == (snd hrle)) then {-(hlength+1, hchar) : acc tchars tlengths-} []
-            else                           {-(        1, hchar) : acc tchars tlengths-} []
+            else                         (        1, hstr) : (acc tstr (hrle:trle)) --[]
         --acc _                _                  = []
 
 
