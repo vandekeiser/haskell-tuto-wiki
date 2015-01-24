@@ -51,10 +51,10 @@ the exponent of the largest power of 2
 which is less than or equal to its argument. 
 For example, log2 16 = 4, log2 11 = 3, and log2 1 = 0.-}
 --             2^  4 =16,   2^  3 = 8,       2^ 0 = 1 
-log2 :: Int -> Int --pour etre sur que la division par 2 est entiere
+log2 :: Int -> Int --pour etre sur a la compil que la division par 2 est entiere
 log2 1 = 0
 log2 2 = 1
---log2 n = 1 + log2 (/ n 2) Fractional result
+--log2 n = 1 + log2 (/ n 2) --KO / donne un Fractional
 log2 n = 1 + log2 (div n 2) 
 
 
