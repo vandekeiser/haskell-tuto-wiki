@@ -181,12 +181,8 @@ rle str = acc str []
         acc (hstr : tstr) (hrle:trle) =
             if hstr == (snd hrle) 
                 then acc tstr (((fst hrle)+1, hstr) : trle)
-                else (1, hstr) : (acc tstr (hrle:trle))
-{-*Elementary> rle "aaaaa"
-[(5,'a')]
-*Elementary> rle "aaaaab"
-[(1,'b'),(5,'a')]
-*Elementary> rle "aaaaabc"
-[(1,'b'),(1,'c'),(5,'a')]
-*Elementary> rle "aaaaabcd"
-[(1,'b'),(1,'c'),(1,'d'),(5,'a')]-}
+                else acc tstr ((1, hstr) : hrle : trle)
+{-*Elementary> rle "aaaaabcd"
+[(1,'d'),(1,'c'),(1,'b'),(5,'a')]
+*Elementary> rle "aaaabbaaa"
+[(3,'a'),(2,'b'),(4,'a')]-}
