@@ -149,3 +149,14 @@ ddouble x = 2 * x
 mmap :: (Int->Int)->[Int]->[Int]
 mmap _ []      = []
 mmap f (h : t) = (f h) : (mmap f t)
+
+{-Use map to build functions that, given a list xs of Ints, return:
+    -A list that is the element-wise negation of xs-}
+moins :: [Int] -> [Int]
+moins = map neg where neg x = (0-x)
+
+{-A list of lists of Ints xss that, for each element of xs, contains the divisors of xs. 
+You can use the following function to get the divisors:
+divisors p = [ f | f <- [1..p], p `mod` f == 0 ]-}
+divs :: [Int] -> [[Int]]
+divs = map divisors where divisors p = [ f | f <- [1..p], p `mod` f == 0 ]
