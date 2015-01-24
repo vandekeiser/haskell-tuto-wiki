@@ -173,15 +173,16 @@ divs = map divisors where divisors p = [ f | f <- [1..p], p `mod` f == 0 ]
     The concat and group functions might be helpful. 
     In order to use group, you will need to import the Data.List module. -}
 rle :: [Char] -> [(Int, Char)]    
---On appende les tuples à gauche donc il faut un reverse 
---(on appende à gauche car avec (hrle:trle) on extrait à gauche)
---(je n'ai pas utilise concat/group donc il y a peut-etre plus simple,
---la je voulais utiliser les operations de base)
+--Je n'ai pas utilise concat/group donc il y a peut-etre plus simple,
+--la je voulais utiliser les operations de base
 rle str = _reverse (acc str []) 
     where
         acc :: [Char] -> [(Int, Char)] -> [(Int, Char)]
+        --Fin de traitement, ou chaine vide des le debut: la chaine vide ne change pas le RLE
         acc []            _rle        = _rle                 
+        --Le premier caractere de la chaine initialise le RLE
         acc (hstr : tstr) []          = acc tstr [(1, hstr)]
+        --Si on a deja commence a remplir le RLE:
         acc (hstr : tstr) (hrle:trle) =
             --Si le caractere courant est == celui du tuple courant
             if hstr == (snd hrle) 
@@ -189,6 +190,9 @@ rle str = _reverse (acc str [])
                 then acc tstr (((fst hrle)+1, hstr) : trle)
                 --Sinon, pour le caractere suivant, on initialise un nouveau tuple
                 else acc tstr ((1, hstr) : hrle : trle)
+        --On appende les tuples à gauche, donc faut reverser le resultat final.
+        --(on appende à gauche pour pouvoir lire le tuple courant du RLE
+        --avec le (hrle:trle) de base, qui extrait à gauche)
         _reverse :: [a] -> [a]
         _reverse [] = []
         _reverse (h:t) = (_reverse t) ++ [h]
