@@ -173,8 +173,14 @@ divs = map divisors where divisors p = [ f | f <- [1..p], p `mod` f == 0 ]
     The concat and group functions might be helpful. 
     In order to use group, you will need to import the Data.List module. -}
 rle :: [Char] -> [(Int, Char)]    
-rle [] = []
-rle (c:[]) = [(1, c)]
+rle str = acc str []
 
-rle "aaaabbaaa" = [(4,'a'), (2, 'b'), (3, 'a')]
-rle _           = []
+
+
+    where
+        acc (c : [])         []                 = (c, 1) : []
+        acc (hchar : tchars) (hlength:tlengths) =
+            if hchar == (fst hlength) then (hchar, hlength+1) : acc tchars tlengths
+            else                           (hchar,         1) : acc tchars tlengths     
+
+
