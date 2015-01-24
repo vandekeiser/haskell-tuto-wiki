@@ -176,14 +176,10 @@ rle :: [Char] -> [(Int, Char)]
 rle str = acc str []
     where
         acc :: [Char] -> [(Int, Char)] -> [(Int, Char)]
-        acc []       rrle             = rrle
-        acc (c : []) []               = (1, c) : []
-         {-Couldn't match expected type `[(Int, Char)]'
-             with actual type `(t0, Char)'
-             In the second argument of `acc', namely `(1, hstr)'
-             In the first argument of `(:)', namely `(acc tstr (1, hstr))'
-             In the expression: (acc tstr (1, hstr)) : []-}
+        acc []            rrle        = rrle
         acc (hstr : tstr) []          = acc tstr ((1, hstr):[])
         acc (hstr : tstr) (hrle:trle) =
             if (hstr == (snd hrle)) then ((fst hrle)+1, hstr) : (acc tstr trle)
             else                         (           1, hstr) : (acc tstr (hrle:trle))
+{-*Elementary> rle "aaaabbaaa"
+[(2,'a'),(2,'a'),(2,'b'),(2,'a'),(1,'a')]-}
