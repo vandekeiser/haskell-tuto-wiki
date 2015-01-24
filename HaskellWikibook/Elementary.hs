@@ -132,7 +132,7 @@ scanSum l = acc 0 l
         acc s (h:t) = (h+s) : acc (h+s) t
 --sans accumulation:
 scanSum2 :: Num a => [a] -> [a]
-scanSum2 [] = []
-scanSum2 (e : []) = e : []
-scanSum2 _        = []
+scanSum2 []            = []
+scanSum2 (h1 : [])     = h1 : []
+scanSum2 (h1 : h2 : t) = h1 : scanSum2( (h1+h2) : t)
 
