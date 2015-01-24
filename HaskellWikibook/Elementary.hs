@@ -187,9 +187,9 @@ In the first argument of `acc', namely `str'
 In the expression: acc str []-}
     where
         acc (c : [])         []                 = (1, c) : []
-        {-acc (hchar : tchars) (hlength:tlengths) =
-            if hchar == (fst hlength) then (hlength+1, hchar) : acc tchars tlengths
-            else                           (        1, hchar) : acc tchars tlengths-}
-        acc _                _                  = []
+        acc (hchar : tchars) (hlength:tlengths) =
+            if hchar == (fst hlength) then {-(hlength+1, hchar) : acc tchars tlengths-} []
+            else                           {-(        1, hchar) : acc tchars tlengths-} []
+        --acc _                _                  = []
 
 
