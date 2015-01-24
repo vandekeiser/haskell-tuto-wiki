@@ -194,8 +194,8 @@ In the expression: acc str []-}
               Actual type: (Int, Char)
             In the first argument of `fst', namely `hlength'
             In the second argument of `(==)', namely `(fst hlength)'-}
-            if (hstr == (snd hrle)) then {-(hlength+1, hchar) : acc tchars tlengths-} []
-            else                         (        1, hstr) : (acc tstr (hrle:trle)) --[]
+            if (hstr == (snd hrle)) then ((fst hrle)+1, hstr) : (acc tstr trle) --[]
+            else                         (           1, hstr) : (acc tstr (hrle:trle)) --[]
         --acc _                _                  = []
 
 
