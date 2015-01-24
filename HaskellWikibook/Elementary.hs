@@ -57,6 +57,41 @@ log2 2 = 1
 --log2 n = 1 + log2 (/ n 2) --KO / donne un Fractional
 log2 n = 1 + log2 (div n 2) 
 
+length2 :: [a] -> Int
+length2 []      = 0
+length2 (elt : rest) = 1 + (length2 rest)
 
+listconcat :: [a] -> [a] -> [a]
+listconcat [] l2  = l2
+--listconcat l1 l2  = (head l1) : listconcat (tail l1) l2
+listconcat (e:l1) l2  = e : listconcat l1 l2
 
+{-replicate :: Int -> a -> [a], 
+which takes a count and an element 
+and returns the list which is that element repeated that many times. 
+E.g. replicate 3 'a' = "aaa".-}
+repl :: Int -> x -> [x]
+repl 0 elt = []
+repl n elt = elt : repl (n-1) elt
 
+{-(!!) :: [a] -> Int -> a, 
+which returns the element at the given 'index'. -}
+get :: [a] -> Int -> a
+get []    _ = error "no such element"
+get (h:t) 0 = h
+get (h:t) n = get t (n-1)
+
+{-zip :: [a] -> [b] -> [(a, b)], 
+which takes two lists and 'zips' them together, 
+E.g. zip [1,2,3] "abc" = [(1, 'a'), (2, 'b'), (3, 'c')]. 
+If either of the lists is shorter than the other, you can stop once either list runs out.-}
+zzip :: [a] -> [b] -> [(a,b)]
+zzip _       []      = []
+zzip []      _       = []
+zzip (h1:t1) (h2:t2) = (h1, h2) : (zzip t1 t2)
+
+length3 :: [a] -> Int
+length3 l = acc 0 l
+    where
+        acc n []    = n 
+        acc n (h:t) = acc (n+1) t
