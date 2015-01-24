@@ -174,28 +174,12 @@ divs = map divisors where divisors p = [ f | f <- [1..p], p `mod` f == 0 ]
     In order to use group, you will need to import the Data.List module. -}
 rle :: [Char] -> [(Int, Char)]    
 rle str = acc str []
-{-Couldn't match type `(Int, b0)' with `Char'
-Expected type: [(Int, Char)]
-  Actual type: [(Int, (Int, b0))]
-In the expression: acc str []
-In an equation for `rle':-}
-
-{-Couldn't match type `Char' with `Int'
-Expected type: [Int]
-  Actual type: [Char]
-In the first argument of `acc', namely `str'
-In the expression: acc str []-}
     where
         acc :: [Char]       -> [(Int, Char)] -> [(Int, Char)]
+        acc    []              _             =  []
         acc    (c : [])        []            =  (1, c) : []
         acc    (hstr : tstr)   (hrle:trle)   =
-            {-Couldn't match type `Int' with `Char'
-            Expected type: (Char, Char)
-              Actual type: (Int, Char)
-            In the first argument of `fst', namely `hlength'
-            In the second argument of `(==)', namely `(fst hlength)'-}
-            if (hstr == (snd hrle)) then ((fst hrle)+1, hstr) : (acc tstr trle) --[]
-            else                         (           1, hstr) : (acc tstr (hrle:trle)) --[]
-        --acc _                _                  = []
+            if (hstr == (snd hrle)) then ((fst hrle)+1, hstr) : (acc tstr trle)
+            else                         (           1, hstr) : (acc tstr (hrle:trle))
 
 
