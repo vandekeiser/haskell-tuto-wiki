@@ -142,3 +142,10 @@ diffs :: Num a => [a] -> [a]
 diffs []            = []
 diffs (h1 : [])     = []
 diffs (h1 : h2 : t) = (h2 - h1) : diffs(h2 : t)
+
+ddouble :: Int -> Int
+ddouble x = 2 * x
+--on peut inliner: mmap (10*) [1,2,3]=[10,20,30]
+mmap :: (Int->Int)->[Int]->[Int]
+mmap _ []      = []
+mmap f (h : t) = (f h) : (mmap f t)
