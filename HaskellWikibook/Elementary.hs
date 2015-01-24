@@ -186,9 +186,15 @@ Expected type: [Int]
 In the first argument of `acc', namely `str'
 In the expression: acc str []-}
     where
-        acc (c : [])         []                 = (1, c) : []
-        acc (hchar : tchars) (hlength:tlengths) =
-            if hchar == (fst hlength) then {-(hlength+1, hchar) : acc tchars tlengths-} []
+        acc :: [Char]       -> [(Int, Char)] -> [(Int, Char)]
+        acc    (c : [])        []            =  (1, c) : []
+        acc    (hstr : tstr)   (hrle:trle)   =
+            {-Couldn't match type `Int' with `Char'
+            Expected type: (Char, Char)
+              Actual type: (Int, Char)
+            In the first argument of `fst', namely `hlength'
+            In the second argument of `(==)', namely `(fst hlength)'-}
+            if (hstr == (snd hrle)) then {-(hlength+1, hchar) : acc tchars tlengths-} []
             else                           {-(        1, hchar) : acc tchars tlengths-} []
         --acc _                _                  = []
 
