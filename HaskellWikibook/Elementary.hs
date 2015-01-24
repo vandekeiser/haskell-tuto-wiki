@@ -123,17 +123,13 @@ ssum :: Num a => [a] -> a
 ssum (h:t) = h + ssum (t)
 ssum []    = 0
 
-{-scanSum adds the items in a list and returns a list of the running totals. So: 
-   scanSum [2] returns [2]
-   scanSum [2,3] returns [2,5]
-   scanSum [2,3,4,5] returns [2,5,9,14]-}
+{-scanSum adds the items in a list and returns a list of the running totals. 
+So scanSum [2,3,4,5] returns [2,5,9,14]-}
 scanSum :: Num a => [a] -> [a]
-scanSum []     = []
-scanSum (h:t)  = acc 0 h t
+scanSum l  = acc 0 l
     where        
-        acc somme hh [] = (hh+somme) : []
-        acc somme hh tt = (hh+somme) : acc (hh+somme) (head tt) (tail tt)
-
+        acc _ []    = []
+        acc s (h:t) = (h+s) : acc (h+s) t
 
 
 
