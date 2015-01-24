@@ -1,4 +1,4 @@
-module Toto where
+module Basic where
 
 import Data.Char
 
@@ -108,9 +108,6 @@ egal = (==) 3 (length [1, 2, 3])
 -- Int n'est tjrs pas polymorphique mais c'est un Eq 
 -- (dans le cas précédent Int n'etait pas un Fractional)
 
-sign x = if x < 0 then -1
-	     else if x > 0 then 1
-	     else 0
 sign2 x
 	| x < 0     = -1
 	| x > 0     = 1

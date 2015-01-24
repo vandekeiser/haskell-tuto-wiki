@@ -1,3 +1,7 @@
+module Elementary where
+
+import Data.List
+
 fact1 n = 
     if n < 0 then error "cannot be < 0"
     else if n == 0 then 1
@@ -160,3 +164,11 @@ You can use the following function to get the divisors:
 divisors p = [ f | f <- [1..p], p `mod` f == 0 ]-}
 divs :: [Int] -> [[Int]]
 divs = map divisors where divisors p = [ f | f <- [1..p], p `mod` f == 0 ]
+
+{-Implement a Run Length Encoding (RLE) encoder and decoder.
+    The idea of RLE is simple; given some input:
+    "aaaabbaaa"
+    compress it by taking the length of each run of characters:
+    (4,'a'), (2, 'b'), (3, 'a')
+    The concat and group functions might be helpful. 
+    In order to use group, you will need to import the Data.List module. -}
