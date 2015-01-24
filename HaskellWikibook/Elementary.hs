@@ -136,3 +136,9 @@ scanSum2 []            = []
 scanSum2 (h1 : [])     = h1 : []
 scanSum2 (h1 : h2 : t) = h1 : scanSum2( (h1+h2) : t)
 
+{-diffs returns a list of the differences between adjacent items. 
+So diffs [3,5,6,8] returns [2,1,2]-}
+diffs :: Num a => [a] -> [a]
+diffs []            = []
+diffs (h1 : [])     = []
+diffs (h1 : h2 : t) = (h2 - h1) : diffs(h2 : t)
