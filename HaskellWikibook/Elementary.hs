@@ -177,11 +177,16 @@ rle str = acc str []
     where
         acc :: [Char] -> [(Int, Char)] -> [(Int, Char)]
         acc []            rrle        = rrle                 
-        acc (hstr : tstr) []          = acc tstr ((1, hstr):[])
+        acc (hstr : tstr) []          = acc tstr [(1, hstr)]
         acc (hstr : tstr) (hrle:trle) =
-            if hstr == (snd hrle) then acc tstr (((fst hrle)+1, hstr) : trle)
-            else (1, hstr) : (acc tstr (hrle:trle))
+            if hstr == (snd hrle) 
+                then acc tstr (((fst hrle)+1, hstr) : trle)
+                else (1, hstr) : (acc tstr (hrle:trle))
 {-*Elementary> rle "aaaaa"
 [(5,'a')]
 *Elementary> rle "aaaaab"
-[(1,'b'),(5,'a')]-}
+[(1,'b'),(5,'a')]
+*Elementary> rle "aaaaabc"
+[(1,'b'),(1,'c'),(5,'a')]
+*Elementary> rle "aaaaabcd"
+[(1,'b'),(1,'c'),(1,'d'),(5,'a')]-}
