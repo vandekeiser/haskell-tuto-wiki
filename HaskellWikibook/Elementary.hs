@@ -131,8 +131,8 @@ scanSum :: Num a => [a] -> [a]
 scanSum []     = []
 scanSum (h:t)  = acc 0 h t
     where        
-        --acc somme hh tt = []
-        acc somme hh tt = (hh+somme) : acc (hh+somme) hh tt
+        acc somme hh [] = (hh+somme) : []
+        acc somme hh tt = (hh+somme) : acc (hh+somme) (head tt) (tail tt)
 
 
 
