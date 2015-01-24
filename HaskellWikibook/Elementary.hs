@@ -176,10 +176,9 @@ rle :: [Char] -> [(Int, Char)]
 rle str = acc str []
     where
         acc :: [Char] -> [(Int, Char)] -> [(Int, Char)]
-        acc []       _  = []
-        acc (c : []) [] = (1, c) : []
-        acc (hstr : tstr) (hrle:trle)   =
+        acc []       rrle             = rrle
+        acc (c : []) []               = (1, c) : []
+        acc (hstr : tstr) (hrle:trle) =
             if (hstr == (snd hrle)) then ((fst hrle)+1, hstr) : (acc tstr trle)
             else                         (           1, hstr) : (acc tstr (hrle:trle))
-
-
+        acc (hstr : tstr) _ = []    
