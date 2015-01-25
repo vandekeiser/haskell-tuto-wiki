@@ -296,8 +296,32 @@ rev  = foldr  (\ x xs -> xs ++ [x] ) []
 --foldr: f a (f b (f c acc)) : EVAL DE DROITE A GAUCHE
 --foldl: f (f (f acc a) b) c : EVAL DE GAUCHE A DROITE
 --foldl :: (a -> b -> a) -> a -> [b] -> a
---foldl lambda [] [a b], lambda=(\ xs x -> x : xs )
+--foldl lambda [] [a b], avec lambda=(\ xs x -> x : xs )
 -- = lambda (lambda ([] a)) b
 -- = lambda ([a]          ) b
 -- = b:[a] = [b a]
 revl  = foldl' (\ xs x -> x : xs ) []
+
+
+
+{-scanr   :: (a -> b -> b) -> b -> [a] -> [b]
+scanr1  :: (a -> a -> a) -> [a] -> [a]
+These two functions are the exact counterparts of scanl and scanl1. 
+They accumulate the totals from the right. So:
+scanr (+) 0 [1,2,3] = [6,5,3,0]
+
+Write your own definition of scanr, first using recursion, and then using foldr. 
+Do the same for scanl first using recursion then foldl.-}
+sscanr :: (a -> b -> b) -> b -> [a] -> [b]
+--sscanr (+) 0 [] = [0]
+--sscanr (+) 0 [3] = [3, 0]
+--sscanr (+) 0 [2, 3] = [5, 3, 0]
+
+sscanr f neutral liste = go f [neutral] liste
+where 
+    go f acc []      = acc
+    go f acc (h : t) = (f h (head acc)) : (go f acc t)
+
+--sscanr f acc (h : t) = (f h acc) : (sscanr f acc t)
+--sscanr2 :: (a -> b -> b) -> b -> [a] -> [b]
+--sscanr2 f acc = foldr (\ x xs -> (f x) : xs ) [acc] 
