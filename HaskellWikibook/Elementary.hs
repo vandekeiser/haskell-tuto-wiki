@@ -169,30 +169,34 @@ divs = map divisors where divisors p = [ f | f <- [1..p], p `mod` f == 0 ]
     The idea of RLE is simple; given some input:
     "aaaabbaaa"
     compress it by taking the length of each run of characters:
-    (4,'a'), (2, 'b'), (3, 'a')
-    The concat and group functions might be helpful. 
-    In order to use group, you will need to import the Data.List module. -}
+    (4,'a'), (2, 'b'), (3, 'a')-}
 rle :: [Char] -> [(Int, Char)]    
---Je n'ai pas utilise concat/group donc il y a peut-etre plus simple,
---la je voulais utiliser les operations de base
-rle str = _reverse (acc str []) 
+{-Je n'ai pas utilise concat/group donc il y a peut-etre plus simple,
+la je voulais utiliser les operations de base
+On appende les tuples à gauche, donc faut reverser le resultat final.
+(on les appende à gauche pour pouvoir lire le tuple courant du RLE
+avec le (hrle:trle) de base, or il extrait à gauche)-}
+rle str = reverse (acc str []) 
     where
         acc :: [Char] -> [(Int, Char)] -> [(Int, Char)]
         --Fin de traitement, ou chaine vide des le debut: la chaine vide ne change pas le RLE
-        acc []            _rle        = _rle                 
+        acc []            _rle          = _rle                 
         --Le premier caractere de la chaine initialise le RLE
-        acc (hstr : tstr) []          = acc tstr [(1, hstr)]
+        acc (hstr : tstr) []            = acc tstr [(1, hstr)]
         --Si on a deja commence a remplir le RLE:
-        acc (hstr : tstr) (hrle:trle) =
+        acc (hstr : tstr) (hrle : trle) =
             --Si le caractere courant est == celui du tuple courant
             if hstr == (snd hrle) 
                 --Alors, pour le caractere suivant, le tuple courant est incrémenté
                 then acc tstr (((fst hrle)+1, hstr) : trle)
                 --Sinon, pour le caractere suivant, on initialise un nouveau tuple
                 else acc tstr ((1, hstr) : hrle : trle)
-        --On appende les tuples à gauche, donc faut reverser le resultat final.
-        --(on appende à gauche pour pouvoir lire le tuple courant du RLE
-        --avec le (hrle:trle) de base, qui extrait à gauche)
-        _reverse :: [a] -> [a]
-        _reverse [] = []
-        _reverse (h:t) = (_reverse t) ++ [h]
+
+--TODO rle2 avec concat/group
+{-The concat and group functions might be helpful. 
+    In order to use group, you will need to import the Data.List module.-}
+rle2 :: [Char] -> [(Int, Char)]    
+rle2 str = ranger (group str)
+    where 
+        ranger []      = []
+        ranger (h : t) = (length h, head h) : ranger t
