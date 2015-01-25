@@ -287,8 +287,17 @@ mmax3 = foldr1 max
 
 {-Use a fold (which one?) to define reverse :: [a] -> [a], 
 which returns a list with the elements in reverse order.-}
-{-foldr            :: (a -> b -> b) -> b -> [a] -> b
+{-foldr :: (a -> b -> b) -> b -> [a] -> b
 foldr f acc []     = acc
 foldr f acc (x:xs) = f x (foldr f acc xs)-}
-rev :: [a] -> [a]
-rev = foldr (\ x xs -> xs ++ [x] ) []
+rev, revl :: [a] -> [a]
+rev  = foldr  (\ x xs -> xs ++ [x] ) []
+--foldX: The names refer to where the fold starts
+--foldr: f a (f b (f c acc)) : EVAL DE DROITE A GAUCHE
+--foldl: f (f (f acc a) b) c : EVAL DE GAUCHE A DROITE
+--foldl :: (a -> b -> a) -> a -> [b] -> a
+--foldl lambda [] [a b], lambda=(\ xs x -> x : xs )
+-- = lambda (lambda ([] a)) b
+-- = lambda ([a]          ) b
+-- = b:[a] = [b a]
+revl  = foldl' (\ xs x -> x : xs ) []
