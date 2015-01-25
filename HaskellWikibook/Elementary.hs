@@ -186,11 +186,11 @@ rleEncode str = reverse (acc str [])
         acc (hstr : tstr) []            = acc tstr [(1, hstr)]
         --Si on a déjà commencé à remplir le RLE:
         acc (hstr : tstr) (hrle : trle) =
-            --Le caractere courant est-il le même que celui du tuple courant?
+            --Le caractère courant est-il le même que celui du tuple courant?
             if hstr == (snd hrle) 
-                --Oui: on passe à la suite de la chaîne, et le tuple courant est incrémenté
+                --Oui: le tuple courant est incrémenté
                 then acc tstr (((fst hrle)+1, hstr) : trle)
-                --Non: on passe à la suite de la chaîne, et on ajoute un nouveau tuple initialisé à 1
+                --Non: on ajoute un nouveau tuple initialisé à 1
                 else acc tstr ((1, hstr) : hrle : trle)
 
 {-The concat and group functions might be helpful. 
@@ -213,15 +213,15 @@ rleDecode (h : t) = rleDecodeTuple h ++ rleDecode t
 into a string (e.g. "4a6b")?-}
 rleTuples2Str :: [(Int, Char)] -> String
 rleTuples2Str []        = ""
-rleTuples2Str ( h : t ) = show(fst h) ++ [(snd h)] ++ (rleTuples2Str t)
+rleTuples2Str ( h : t ) = show(fst h) ++ [snd h] ++ (rleTuples2Str t)
 
 {-Assuming numeric characters are forbidden in the original string, 
 how would you parse that string back into a list of tuples?-}
---Marche que si les nombres ne depassent pas 9, sinon il doit falloir un accumulateur
+--Ne marche que si les nombres ne depassent pas 9, sinon il doit falloir un accumulateur
 rleStr2Tuples :: String -> [(Int, Char)]
 rleStr2Tuples ""              = []
-rleStr2Tuples ( hn : hc : t ) = (digitToInt hn, hc) : (rleStr2Tuples t)
-rleStr2Tuples _               = error "odd"
+rleStr2Tuples ( hn : hc : t ) = (read [hn], hc) : (rleStr2Tuples t)
+rleStr2Tuples _               = error "odd nb of elts"
 
 --[1..10] == [1,2,3,4,5,6,7,8,9,10]
 --[1..10] == jq infini
@@ -253,3 +253,37 @@ minusLast2 :: [a] -> [a]
 minusLast2 []      = []
 minusLast2 [x]     = []
 minusLast2 (h : t) = [h] ++ (minusLast2 t)
+
+--foldX: The names refer to where the fold starts
+--foldr: f a (f b (f c acc))
+--foldl: f (f (f acc a) b) c
+--ex avec lambda: map f = foldr (\x xs -> f x : xs) []
+
+{-Define the following functions recursively 
+(like the definitions for sum, product and concat above), 
+then turn them into a fold:
+    and :: [Bool] -> Bool
+    or :: [Bool] -> Bool-}
+aand :: [Bool] -> Bool
+aand [] = error "NSE"
+aand [b] = b
+aand (h : t) = h && (aand t)
+
+aand2 :: [Bool] -> Bool
+aand2 = foldr1 (\ b1 b2 -> b1 && b2)
+
+{-Define the following functions using foldl1 or foldr1:
+    maximum :: Ord a => [a] -> a
+    minimum :: Ord a => [a] -> a-}
+mmax :: Ord a => [a] -> a
+mmax [] = error "NSE"
+mmax [e] = e
+mmax (h1 : h2 : t) = if h1>=h2 then mmax (h1:t) else mmax (h2:t)
+
+mmax2 :: Ord a => [a] -> a
+mmax2 = foldr1 (\ e1 e2 -> if e1>=e2 then e1 else e2)
+
+{-Use a fold (which one?) to define reverse :: [a] -> [a], 
+which returns a list with the elements in reverse order.-}
+{-rev :: [a] -> [a]
+rev = foldX-}
