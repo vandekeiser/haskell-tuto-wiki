@@ -287,5 +287,8 @@ mmax3 = foldr1 max
 
 {-Use a fold (which one?) to define reverse :: [a] -> [a], 
 which returns a list with the elements in reverse order.-}
-{-rev :: [a] -> [a]
-rev = foldX-}
+{-foldr            :: (a -> b -> b) -> b -> [a] -> b
+foldr f acc []     = acc
+foldr f acc (x:xs) = f x (foldr f acc xs)-}
+rev :: [a] -> [a]
+rev = foldr (\ x xs -> xs ++ [x] ) []
