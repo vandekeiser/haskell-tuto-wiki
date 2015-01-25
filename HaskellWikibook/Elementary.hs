@@ -1,6 +1,7 @@
 module Elementary where
 
 import Data.List
+import Data.Char
 
 fact1 n = 
     if n < 0 then error "cannot be < 0"
@@ -207,3 +208,38 @@ rleDecode (h : t) = rleDecodeTuple h ++ rleDecode t
         rleDecodeTuple :: (Int, Char) -> String
         rleDecodeTuple (0, c) = ""
         rleDecodeTuple (n, c) = (rleDecodeTuple ((n-1), c)) ++ [c]
+
+{-How would you convert the list of tuples (e.g. [(4,'a'), (6,'b')]) 
+into a string (e.g. "4a6b")?-}
+rleTuples2Str :: [(Int, Char)] -> String
+rleTuples2Str []        = ""
+rleTuples2Str ( h : t ) = show(fst h) ++ [(snd h)] ++ (rleTuples2Str t)
+
+{-Assuming numeric characters are forbidden in the original string, 
+how would you parse that string back into a list of tuples?-}
+--Marche que si les nombres ne depassent pas 9, sinon il doit falloir un accumulateur
+rleStr2Tuples :: String -> [(Int, Char)]
+rleStr2Tuples ""              = []
+rleStr2Tuples ( hn : hc : t ) = (digitToInt hn, hc) : (rleStr2Tuples t)
+rleStr2Tuples _               = error "odd"
+
+--[1..10] == [1,2,3,4,5,6,7,8,9,10]
+--[1..10] == jq infini
+
+{-With respect to your solutions to the first set of exercises in this chapter, 
+is there any difference between scanSum (takeInt 10 [1..]) 
+and takeInt 10 (scanSum [1..])?-}
+--Non car mm takeint est lazy (?)
+
+{-Write a function that, when applied to lists, give the last element of the list-}
+llast :: [a] -> a
+llast []      = error "no such elt"
+llast (h : t) = if (null t) then h else llast t
+
+{-Write a function that, when applied to lists, gives the list with the last element dropped-}
+minusLast :: [a] -> [a]
+minusLast liste = acc liste []
+    where
+        acc []      res = res
+        acc [x]     res = res
+        acc (h : t)  res = h : (acc t res)
