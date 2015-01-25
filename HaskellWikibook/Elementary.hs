@@ -269,8 +269,9 @@ aand [] = error "NSE"
 aand [b] = b
 aand (h : t) = h && (aand t)
 
-aand2 :: [Bool] -> Bool
+aand2, aand3 :: [Bool] -> Bool
 aand2 = foldr1 (\ b1 b2 -> b1 && b2)
+aand3 = foldr1 (||)
 
 {-Define the following functions using foldl1 or foldr1:
     maximum :: Ord a => [a] -> a
@@ -280,8 +281,9 @@ mmax [] = error "NSE"
 mmax [e] = e
 mmax (h1 : h2 : t) = if h1>=h2 then mmax (h1:t) else mmax (h2:t)
 
-mmax2 :: Ord a => [a] -> a
+mmax2, mmax3 :: Ord a => [a] -> a
 mmax2 = foldr1 (\ e1 e2 -> if e1>=e2 then e1 else e2)
+mmax3 = foldr1 max
 
 {-Use a fold (which one?) to define reverse :: [a] -> [a], 
 which returns a list with the elements in reverse order.-}
