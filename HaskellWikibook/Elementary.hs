@@ -229,12 +229,17 @@ rleStr2Tuples _               = error "odd"
 {-With respect to your solutions to the first set of exercises in this chapter, 
 is there any difference between scanSum (takeInt 10 [1..]) 
 and takeInt 10 (scanSum [1..])?-}
---Non car mm takeint est lazy (?)
+--Non car mm takeint est lazy
 
 {-Write a function that, when applied to lists, give the last element of the list-}
 llast :: [a] -> a
 llast []      = error "no such elt"
 llast (h : t) = if (null t) then h else llast t
+
+llast2 :: [a] -> a
+llast2 []      = error "no such elt"
+llast2 [x]     = x
+llast2 (h : t) = llast2 t
 
 {-Write a function that, when applied to lists, gives the list with the last element dropped-}
 minusLast :: [a] -> [a]
@@ -242,4 +247,9 @@ minusLast liste = acc liste []
     where
         acc []      res = res
         acc [x]     res = res
-        acc (h : t)  res = h : (acc t res)
+        acc (h : t) res = h : (acc t res)
+
+minusLast2 :: [a] -> [a]
+minusLast2 []      = []
+minusLast2 [x]     = []
+minusLast2 (h : t) = [h] ++ (minusLast2 t)
