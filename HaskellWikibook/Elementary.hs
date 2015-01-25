@@ -171,28 +171,27 @@ divs = map divisors where divisors p = [ f | f <- [1..p], p `mod` f == 0 ]
     compress it by taking the length of each run of characters:
     (4,'a'), (2, 'b'), (3, 'a')-}
 rle :: [Char] -> [(Int, Char)]    
-{-Je n'ai pas utilise concat/group donc il y a peut-etre plus simple,
-la je voulais utiliser les operations de base
-On appende les tuples à gauche, donc faut reverser le resultat final.
+{-Je n'ai pas utilisé concat/group donc il y a plus simple (rle2),
+là je voulais utiliser les opérations de base.
+Comme on appende les tuples à gauche du RLE, il faut reverser le résultat final.
 (on les appende à gauche pour pouvoir lire le tuple courant du RLE
-avec le (hrle:trle) de base, or il extrait à gauche)-}
+avec le (hrle:trle) de base, or celui-ci extrait à gauche)-}
 rle str = reverse (acc str []) 
     where
         acc :: [Char] -> [(Int, Char)] -> [(Int, Char)]
-        --Fin de traitement, ou chaine vide des le debut: la chaine vide ne change pas le RLE
-        acc []            _rle          = _rle                 
-        --Le premier caractere de la chaine initialise le RLE
+        --Fin de traitement, ou chaine vide dès le debut: le RLE est inchangé
+        acc []            rle           = rle                 
+        --Le premier caractère de la chaîne initialise le RLE
         acc (hstr : tstr) []            = acc tstr [(1, hstr)]
-        --Si on a deja commence a remplir le RLE:
+        --Si on a déjà commencé à remplir le RLE:
         acc (hstr : tstr) (hrle : trle) =
-            --Si le caractere courant est == celui du tuple courant
+            --Le caractere courant est-il le même que celui du tuple courant?
             if hstr == (snd hrle) 
-                --Alors, pour le caractere suivant, le tuple courant est incrémenté
+                --Oui: on passe à la suite de la chaîne, et le tuple courant est incrémenté
                 then acc tstr (((fst hrle)+1, hstr) : trle)
-                --Sinon, pour le caractere suivant, on initialise un nouveau tuple
+                --Non: on passe à la suite de la chaîne, et on ajoute un nouveau tuple initialisé à 1
                 else acc tstr ((1, hstr) : hrle : trle)
 
---TODO rle2 avec concat/group
 {-The concat and group functions might be helpful. 
     In order to use group, you will need to import the Data.List module.-}
 rle2 :: [Char] -> [(Int, Char)]    
