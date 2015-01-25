@@ -170,15 +170,15 @@ divs = map divisors where divisors p = [ f | f <- [1..p], p `mod` f == 0 ]
     "aaaabbaaa"
     compress it by taking the length of each run of characters:
     (4,'a'), (2, 'b'), (3, 'a')-}
-rle :: [Char] -> [(Int, Char)]    
+rleEncode :: String -> [(Int, Char)]    
 {-Je n'ai pas utilisé concat/group donc il y a plus simple (rle2),
 là je voulais utiliser les opérations de base.
 Comme on appende les tuples à gauche du RLE, il faut reverser le résultat final.
 (on les appende à gauche pour pouvoir lire le tuple courant du RLE
 avec le (hrle:trle) de base, or celui-ci extrait à gauche)-}
-rle str = reverse (acc str []) 
+rleEncode str = reverse (acc str []) 
     where
-        acc :: [Char] -> [(Int, Char)] -> [(Int, Char)]
+        acc :: String -> [(Int, Char)] -> [(Int, Char)]
         --Fin de traitement, ou chaine vide dès le debut: le RLE est inchangé
         acc []            rle           = rle                 
         --Le premier caractère de la chaîne initialise le RLE
@@ -194,8 +194,16 @@ rle str = reverse (acc str [])
 
 {-The concat and group functions might be helpful. 
     In order to use group, you will need to import the Data.List module.-}
-rle2 :: [Char] -> [(Int, Char)]    
-rle2 str = ranger (group str)
+rleEncode2 :: String -> [(Int, Char)]    
+rleEncode2 str = ranger (group str)
     where 
         ranger []      = []
         ranger (h : t) = (length h, head h) : ranger t
+
+rleDecode :: [(Int, Char)] -> String
+rleDecode []      = ""
+rleDecode (h : t) = rleDecodeTuple h ++ rleDecode t
+    where 
+        rleDecodeTuple :: (Int, Char) -> String
+        rleDecodeTuple (0, c) = ""
+        rleDecodeTuple (n, c) = (rleDecodeTuple ((n-1), c)) ++ [c]
