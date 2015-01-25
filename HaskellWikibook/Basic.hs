@@ -1,6 +1,7 @@
 module Basic where
 
 import Data.Char
+import Data.List
 
 --comm 1
 area r = {-comm2-} pi * r ^ 2
@@ -153,4 +154,76 @@ roots a b c =
     in ((-b -disc) / two_as, 
         (-b + disc) / two_as)
 
-fib = 1 : 1 : [ a + b | (a, b) <- zip fib (tail fib)]
+fib = 1 : 1 : [ u + v | (u, v) <- zip fib (tail fib)]
+
+
+twiceSquare = twice . square
+    where twice x = 2 * x
+          square x = x * x
+
+-- import <module> (Prelude importé automatiqt)
+-- mvn = cabal, maven central = hackage, javadoc = hoogle
+-- :m +Data.List
+testpermutations = permutations "Prelude"          
+
+revWords :: String -> String
+revWords = unwords . reverse . words
+
+{-- putStrLn "ffffffff"
+ putStrLn :: String -> IO ()       action IO qui retourne rien/void/Unit
+ :t getLine
+ getLine :: IO String
+--}
+
+--The final action defines the type of the whole do block
+magIkEenBier :: IO ()
+magIkEenBier = do
+        putStrLn "Welke biere?"
+        biere <- getLine
+        putStrLn "Halv of pint?"
+        vol <- getLine
+        putStrLn ("Has u bleeft, uwe " ++ biere ++ " " ++ vol)
+
+triangleArea :: IO ()
+triangleArea = do
+    putStrLn "Base?"
+    base <- getLine --KO de mettre read ici, read attend un String pas un IO
+    putStrLn "Height?"
+    height <- getLine
+    putStrLn ("Area is: " ++ show(read base * read height / 2))
+
+classifyUserWrtHaskell1 :: IO ()
+classifyUserWrtHaskell1 = do
+    putStrLn "Votre nom?"   
+    nom <- getLine
+    if nom == "Simon"
+        then putStrLn "Gourou"
+        else if nom == "John" 
+            then putStrLn "Gourou"
+            else if nom == "Phil" 
+                then putStrLn "Gourou"
+                else putStrLn "Pekin lambda"
+
+classifyUserWrtHaskell2 = do
+    putStrLn "Votre nom?"   
+    nom <- getLine
+    putStrLn (classe nom)
+    where
+        classe "Simon" = "Gourou"
+        classe "John"  = "Gourou"
+        classe "Phil"  = "Gourou"
+        classe _       = "Pekin lambda"
+
+classifyUserWrtHaskell3 = do
+    putStrLn "Votre nom?"   
+    nom <- getLine
+    putStrLn (classe nom)
+    where 
+        classe n =
+            if n=="Simon" || n=="Phil" || n=="John"
+                then "Gourou"
+                else "Pekin lambda"        
+
+
+-- do = cree un bloc action
+-- action = do keyword
