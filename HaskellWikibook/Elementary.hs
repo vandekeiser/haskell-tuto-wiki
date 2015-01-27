@@ -264,25 +264,27 @@ minusLast2 (h : t) = [h] ++ (minusLast2 t)
 then turn them into a fold:
     and :: [Bool] -> Bool
     or :: [Bool] -> Bool-}
-aand :: [Bool] -> Bool
+aand, aand2, aand3 :: [Bool] -> Bool
+
 aand [] = error "NSE"
 aand [b] = b
 aand (h : t) = h && (aand t)
 
-aand2, aand3 :: [Bool] -> Bool
 aand2 = foldr1 (\ b1 b2 -> b1 && b2)
+
 aand3 = foldr1 (||)
 
 {-Define the following functions using foldl1 or foldr1:
     maximum :: Ord a => [a] -> a
     minimum :: Ord a => [a] -> a-}
-mmax :: Ord a => [a] -> a
+mmax, mmax2, mmax3 :: Ord a => [a] -> a
+
 mmax [] = error "NSE"
 mmax [e] = e
 mmax (h1 : h2 : t) = if h1>=h2 then mmax (h1:t) else mmax (h2:t)
 
-mmax2, mmax3 :: Ord a => [a] -> a
 mmax2 = foldr1 (\ e1 e2 -> if e1>=e2 then e1 else e2)
+
 mmax3 = foldr1 max
 
 {-Use a fold (which one?) to define reverse :: [a] -> [a], 
@@ -312,27 +314,30 @@ These two functions are the exact counterparts of scanl and scanl1.
 They accumulate the totals from the right. So:
 scanr (+) 0 [1,2,3] = [6,5,3,0]
 Write your own definition of scanr, first using recursion..-}
-{-Raisonnement: 
-1/ Comme sscanr prend en arg un "element neutre" de f, si la liste est vide on retourne un singleton de cet elt.
-2/ sscanr(n+1)= (YYY : sscanr(n)) -> reste à exprimer YYY expicitement
-3/ Le point difficile est que YYY dépend aussi de sscanr(r): on dépend de la somme déja calculée
-4/ Vu la définition de scan, la somme déja calculée est (head previous)
--}
-sscanr :: (a -> b -> b) -> b -> [a] -> [b]
+sscanr, sscanr2 :: (a -> b -> b) -> b -> [a] -> [b]
+{-Raisonnement (j'ai galéré donc..): 
+1/ Comme sscanr prend en arg un "element neutre" de f, si la liste est vide,
+   on retourne un singleton de cet elt (le "neutron").
+2/ sscanr(n+1)= (YYY : sscanr(n)) ça c'est facile à voir -> reste à exprimer YYY..
+3/ Le point nouveau par rapport aux exercices de récursion précédents est qu'on a 
+   une double dépendance envers l'itération précédente: 
+   comme YYY dépend lui aussi de sscanr(n), EN PLUS de devoir appender le résultat courant à droite, 
+   le nouveau head dépend LUI AUSSI de la somme déja calculée.. 
+   d'où le "where" pour factoriser la suite déjà calculée. 
+4/ Vu la définition de scan, la somme déja calculée est (head previous)-}
 sscanr f neutron []      = [neutron]
 sscanr f neutron (h : t) = (f h (head previous)) : previous
     where previous = (sscanr f neutron t)
 
-{-..and then using foldr.--}
-sscanr2 :: (a -> b -> b) -> b -> [a] -> [b]
---foldr :: (a -> b -> b) -> b -> [a] -> b
---Raisonnement: 
---1/ On part forcément de [neutron] cf: scanr f neutron [] = [neutron]
---2/ Le fold doit trouver XXX dans (\ h t -> XXX), où XXX est le "résultat suivant"
---   (exprimé en fonction du résultat courant, lui-même exprimé en fonction de (h : t))
---3/ Comment on calcule le résultat suivant? 
---   C'est forcément la "somme" de (head "+" le résultat courant)
---4/ Vu qu'on fait un "scan", le résultat courant est (head t)
+{-..and then using foldr
+foldr :: (a -> b -> b) -> b -> [a] -> b
+Raisonnement (pas galéré mais ça coûte pas plus cher, vu le prix déjà payé): 
+1/ On part forcément de [neutron] cf: scanr f neutron [] = [neutron]
+2/ Le fold doit trouver XXX dans (\ h t -> XXX), où XXX est le "résultat suivant"
+   (exprimé en fonction du résultat courant, lui-même exprimé en fonction de (h : t))
+3/ Comment on calcule le résultat suivant? 
+   C'est forcément la "somme" de (head "+" le résultat courant)
+4/ Vu qu'on fait un "scan", le résultat courant est (head t)-}
 sscanr2 f neutron = foldr (\ h t -> (f h (head t)): t) [neutron]
 
 {-Do the same for scanl first using recursion then foldl.-}
