@@ -291,6 +291,8 @@ which returns a list with the elements in reverse order.-}
 foldr f acc []     = acc
 foldr f acc (x:xs) = f x (foldr f acc xs)-}
 rev, revl :: [a] -> [a]
+--foldr       f                      acc        (x:xs) = f x (foldr f acc xs)
+--On lit à gauche avec (x:xs), on ecrit à droite avec xs ++ [x] 
 rev  = foldr  (\ x xs -> xs ++ [x] ) []
 --foldX: The names refer to where the fold starts
 --foldr: f a (f b (f c acc)) : EVAL DE DROITE A GAUCHE
@@ -300,28 +302,38 @@ rev  = foldr  (\ x xs -> xs ++ [x] ) []
 -- = lambda (lambda ([] a)) b
 -- = lambda ([a]          ) b
 -- = b:[a] = [b a]
+--foldl        f                   acc (x:xs) =  foldl f (f acc x) xs
+--On lit à gauche avec x : xs, on compose à droite avec f (f acc x) xs
 revl  = foldl' (\ xs x -> x : xs ) []
-
-
 
 {-scanr   :: (a -> b -> b) -> b -> [a] -> [b]
 scanr1  :: (a -> a -> a) -> [a] -> [a]
 These two functions are the exact counterparts of scanl and scanl1. 
 They accumulate the totals from the right. So:
 scanr (+) 0 [1,2,3] = [6,5,3,0]
-
-Write your own definition of scanr, first using recursion, and then using foldr. 
-Do the same for scanl first using recursion then foldl.-}
+Write your own definition of scanr, first using recursion..-}
+{-Raisonnement: 
+1/ Comme sscanr prend en arg un "element neutre" de f, si la liste est vide on retourne un singleton de cet elt.
+2/ sscanr(n+1)= (YYY : sscanr(n)) -> reste à exprimer YYY expicitement
+3/ Le point difficile est que YYY dépend aussi de sscanr(r): on dépend de la somme déja calculée
+4/ Vu la définition de scan, la somme déja calculée est (head previous)
+-}
 sscanr :: (a -> b -> b) -> b -> [a] -> [b]
---sscanr (+) 0 [] = [0]
---sscanr (+) 0 [3] = [3, 0]
---sscanr (+) 0 [2, 3] = [5, 3, 0]
+sscanr f neutron []      = [neutron]
+sscanr f neutron (h : t) = (f h (head previous)) : previous
+    where previous = (sscanr f neutron t)
 
-sscanr f neutral liste = go f [neutral] liste
-where 
-    go f acc []      = acc
-    go f acc (h : t) = (f h (head acc)) : (go f acc t)
+{-..and then using foldr.--}
+sscanr2 :: (a -> b -> b) -> b -> [a] -> [b]
+--foldr :: (a -> b -> b) -> b -> [a] -> b
+--Raisonnement: 
+--1/ On part forcément de [neutron] cf: scanr f neutron [] = [neutron]
+--2/ Le fold doit trouver XXX dans (\ h t -> XXX), où XXX est le "résultat suivant"
+--   (exprimé en fonction du résultat courant, lui-même exprimé en fonction de (h : t))
+--3/ Comment on calcule le résultat suivant? 
+--   C'est forcément la "somme" de (head "+" le résultat courant)
+--4/ Vu qu'on fait un "scan", le résultat courant est (head t)
+sscanr2 f neutron = foldr (\ h t -> (f h (head t)): t) [neutron]
 
---sscanr f acc (h : t) = (f h acc) : (sscanr f acc t)
---sscanr2 :: (a -> b -> b) -> b -> [a] -> [b]
---sscanr2 f acc = foldr (\ x xs -> (f x) : xs ) [acc] 
+{-Do the same for scanl first using recursion then foldl.-}
+
