@@ -324,7 +324,11 @@ sscanr, sscanr2 :: (a -> b -> b) -> b -> [a] -> [b]
    comme YYY dépend lui aussi de sscanr(n), EN PLUS de devoir appender le résultat courant à droite, 
    le nouveau head dépend LUI AUSSI de la somme déja calculée.. 
    d'où le "where" pour factoriser la suite déjà calculée. 
-4/ Vu la définition de scan, la somme déja calculée est (head previous)-}
+4/ Vu la définition de scan, la somme déja calculée est (head previous)
+5/ LE POINT CRUCIAL est que j'utilise 2x previous, 
+   une fois comme "déjà calculé", et une fois comme base de calcul du nouveau head.
+   C'est un pattern: c'est plus général que factorial, 
+   où le calcul précédent n'est utilisé QUE pour déterminer le résultat suivant.-}
 sscanr f neutron []      = [neutron]
 sscanr f neutron (h : t) = (f h (head previous)) : previous
     where previous = (sscanr f neutron t)
@@ -337,8 +341,11 @@ Raisonnement (pas galéré mais ça coûte pas plus cher, vu le prix déjà pay�
    (exprimé en fonction du résultat courant, lui-même exprimé en fonction de (h : t))
 3/ Comment on calcule le résultat suivant? 
    C'est forcément la "somme" de (head "+" le résultat courant)
-4/ Vu qu'on fait un "scan", le résultat courant est (head t)-}
-sscanr2 f neutron = foldr (\ h t -> (f h (head t)): t) [neutron]
+4/ Vu qu'on fait un "scan", le résultat courant est (head t)x
+5/ Cf. 5/ précédent, foldr est capable d'utiliser le résultat de l'itération N
+   plusieurs fois pour pour calculer l'itération N+1:
+   ici 1 fois pour appender N à droite, et 1 fois pour le head N+1-}
+sscanr2 f neutron = foldr (\ h t -> (f h (head t)) : t) [neutron]
 
 {-Do the same for scanl first using recursion then foldl.-}
 
