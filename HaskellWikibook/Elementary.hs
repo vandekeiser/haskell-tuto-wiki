@@ -293,20 +293,17 @@ which returns a list with the elements in reverse order.-}
 foldr f acc []     = acc
 foldr f acc (x:xs) = f x (foldr f acc xs)-}
 rev, revl :: [a] -> [a]
---foldr       f                      acc        (x:xs) = f x (foldr f acc xs)
---On lit à gauche avec (x:xs), on ecrit à droite avec xs ++ [x] 
-rev  = foldr  (\ x xs -> xs ++ [x] ) []
---foldX: The names refer to where the fold starts
---foldr: f a (f b (f c acc)) : EVAL DE DROITE A GAUCHE
---foldl: f (f (f acc a) b) c : EVAL DE GAUCHE A DROITE
---foldl :: (a -> b -> a) -> a -> [b] -> a
---foldl lambda [] [a b], avec lambda=(\ xs x -> x : xs )
--- = lambda (lambda ([] a)) b
--- = lambda ([a]          ) b
--- = b:[a] = [b a]
---foldl        f                   acc (x:xs) =  foldl f (f acc x) xs
---On lit à gauche avec x : xs, on compose à droite avec f (f acc x) xs
-revl  = foldl' (\ xs x -> x : xs ) []
+--Le lambda calcule le nouvel accumulateur en fonction de l'accumulateur courant 
+--et de l'element courant (ici parcouru de droite à gauche)
+--x=xN: le nouvel accumulateur est []++[xN]=[xN]
+--x=xN-1: le nouvel accumulateur est [xN]++[xN-1]=[xN xN-1]
+rev  = foldr  (\ x acc -> acc ++ [x] ) []
+{-foldl :: (a -> b -> a) -> a -> [b] -> a
+foldl f acc []     =  acc
+foldl f acc (x:xs) =  foldl f (f acc x) xs-}
+--x=x1: le nouvel accumulateur est x1:[]=[x1]
+--x=x1: le nouvel accumulateur est x2:[x1]=[x2 x1] ...
+revl = foldl' (\ acc x -> x : acc )    []
 
 {-scanr   :: (a -> b -> b) -> b -> [a] -> [b]
 scanr1  :: (a -> a -> a) -> [a] -> [a]
@@ -329,9 +326,9 @@ sscanr, sscanr2 :: (a -> b -> b) -> b -> [a] -> [b]
    une fois comme "déjà calculé", et une fois comme base de calcul du nouveau head.
    C'est un pattern: c'est plus général que factorial, 
    où le calcul précédent n'est utilisé QUE pour déterminer le résultat suivant.-}
-sscanr f neutron []      = [neutron]
-sscanr f neutron (h : t) = (f h (head previous)) : previous
-    where previous = (sscanr f neutron t)
+sscanr f acc []    = [acc]
+sscanr f acc (h:t) = (f h (head previous)) : previous
+    where previous = (sscanr f acc t)
 
 {-..and then using foldr
 foldr :: (a -> b -> b) -> b -> [a] -> b
@@ -344,8 +341,28 @@ Raisonnement (pas galéré mais ça coûte pas plus cher, vu le prix déjà pay�
 4/ Vu qu'on fait un "scan", le résultat courant est (head t)x
 5/ Cf. 5/ précédent, foldr est capable d'utiliser le résultat de l'itération N
    plusieurs fois pour pour calculer l'itération N+1:
-   ici 1 fois pour appender N à droite, et 1 fois pour le head N+1-}
-sscanr2 f neutron = foldr (\ h t -> (f h (head t)) : t) [neutron]
+   ici 1 fois pour appender N à droite, et 1 fois pour le head N+1
+scanr (+) 0 [1,2,3] = [6,5,3,0]-}
+sscanr2 f neutron = foldr (\ x acc -> (f x (head acc)) : acc) [neutron]
+
 
 {-Do the same for scanl first using recursion then foldl.-}
+--sscanl (+) [1, 10, 100] = [0, 1, 11, 111]
 
+--f: a = 100, b = [0, 1, 11], r = [0, 1, 11, 111]
+sscanl :: (a -> b -> a) -> a -> [b] -> [a]
+sscanl f acc []    = [acc]
+sscanl f acc (h:t) = acc : sscanl f (f acc h) t
+
+--sscanl (+) 0 [1, 10, 100] = [0,1,11,111]
+sscanl2 f neutron = foldl (\ acc x -> acc ++ (f x (last acc)) ) [neutron]
+
+{-Define the following functions:
+factList :: Integer -> [Integer], 
+which returns a list of factorials from 1 up to its argument. 
+For example, factList 4 = [1,2,6,24].-}
+factList :: Integer -> [Integer]
+factList n = scanl (\ x acc -> acc * x) 1 (range n)
+    where 
+        range 0 = [] 
+        range i = range (i-1) ++ [i]
