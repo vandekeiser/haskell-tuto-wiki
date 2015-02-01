@@ -475,7 +475,7 @@ theDate2 = Date2 1976 7 14
     putFirstChar = do
         (c:_) <- getLine
         putStrLn [c]  
-6/ ... (ex: case)          
+6/ ... (ex: case, lambda)          
 -}
 
 {-Use a case statement to implement a fakeIf function 
@@ -533,4 +533,27 @@ you will understand what return really does
 when we actually start discussing monads further ahead on the book."-}
 
 
+{-Lambdas are a nice way to avoid defining unnecessary separate functions. 
+Convert the following let- or where-bindings to lambdas:-}
 
+doublePlusThree :: Num a => [a] -> [a]
+{-doublePlusThree xs = map f xs where f x = x * 2 + 3-}
+doublePlusThree xs = map (\ x -> x * 2 + 3) xs
+
+sumStringsPlusOne :: [String] -> Int
+{-sumStringsPlusOne xs = let f x y = read x + y in foldr f 1 xs-}
+sumStringsPlusOne xs = foldr (\ x acc -> read x + acc) 1 xs
+
+{-Sections are just syntactic sugar for lambda operations. 
+I.e. (+2) is equivalent to \x -> x + 2. 
+What would the following sections 'desugar' to? What would be their types?-}
+{-(4+)-}
+plusFour :: Num a => a -> a
+plusFour = (4+)  
+{-(1 `elem`)-}
+--oneBelongsTo :: Eq a => [a] -> Bool --KO?!
+oneBelongsTo :: [Int] -> Bool
+oneBelongsTo = (1 `elem`)
+{-(`notElem` "abc")-}
+notInAbc :: Char -> Bool
+notInAbc = (`notElem` "abc")
