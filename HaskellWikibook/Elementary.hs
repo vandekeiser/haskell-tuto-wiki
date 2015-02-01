@@ -26,8 +26,7 @@ doublefact2 n
     | otherwise = n * doublefact2 (n - 2)
 
 -- VV traduction iteration + mutation ->recurs
-factByAcc n = acc n 1
-    where
+factByAcc n = acc n 1 where
     acc cnt res
         | cnt <= 1   = res
         | otherwise  = acc (cnt - 1) (cnt * res)
@@ -96,10 +95,9 @@ zzip []      _       = []
 zzip (h1:t1) (h2:t2) = (h1, h2) : (zzip t1 t2)
 
 length3 :: [a] -> Int
-length3 l = acc 0 l
-    where
-        acc n []    = n 
-        acc n (h:t) = acc (n+1) t
+length3 l = acc 0 l where
+    acc n []    = n 
+    acc n (h:t) = acc (n+1) t
 
 double :: Num(a) => [a] -> [a]
 double [] = []
@@ -131,8 +129,7 @@ ssum []    = 0
 {-scanSum adds the items in a list and returns a list of the running totals. 
 So scanSum [2,3,4,5] returns [2,5,9,14]-}
 scanSum :: Num a => [a] -> [a]
-scanSum l = acc 0 l
-    where        
+scanSum l = acc 0 l where        
         acc _ []    = []
         acc s (h:t) = (h+s) : acc (h+s) t
 --sans accumulation:
@@ -164,7 +161,8 @@ moins = map neg where neg x = (0-x)
 You can use the following function to get the divisors:
 divisors p = [ f | f <- [1..p], p `mod` f == 0 ]-}
 divs :: [Int] -> [[Int]]
-divs = map divisors where divisors p = [ f | f <- [1..p], p `mod` f == 0 ]
+divs = map divisors where 
+    divisors p = [ f | f <- [1..p], p `mod` f == 0 ]
 
 {-Implement a Run Length Encoding (RLE) encoder and decoder.
     The idea of RLE is simple; given some input:
@@ -177,37 +175,34 @@ là je voulais utiliser les opérations de base.
 Comme on appende les tuples à gauche du RLE, il faut reverser le résultat final.
 (on les appende à gauche pour pouvoir lire le tuple courant du RLE
 avec le (hrle:trle) de base, or celui-ci extrait à gauche)-}
-rleEncode str = reverse (acc str []) 
-    where
-        acc :: String -> [(Int, Char)] -> [(Int, Char)]
-        --Fin de traitement, ou chaine vide dès le debut: le RLE est inchangé
-        acc []            rle           = rle                 
-        --Le premier caractère de la chaîne initialise le RLE
-        acc (hstr : tstr) []            = acc tstr [(1, hstr)]
-        --Si on a déjà commencé à remplir le RLE:
-        acc (hstr : tstr) (hrle : trle) =
-            --Le caractère courant est-il le même que celui du tuple courant?
-            if hstr == (snd hrle) 
-                --Oui: le tuple courant est incrémenté
-                then acc tstr (((fst hrle)+1, hstr) : trle)
-                --Non: on ajoute un nouveau tuple initialisé à 1
-                else acc tstr ((1, hstr) : hrle : trle)
+rleEncode str = reverse (acc str []) where
+    acc :: String -> [(Int, Char)] -> [(Int, Char)]
+    --Fin de traitement, ou chaine vide dès le debut: le RLE est inchangé
+    acc []            rle           = rle                 
+    --Le premier caractère de la chaîne initialise le RLE
+    acc (hstr : tstr) []            = acc tstr [(1, hstr)]
+    --Si on a déjà commencé à remplir le RLE:
+    acc (hstr : tstr) (hrle : trle) =
+        --Le caractère courant est-il le même que celui du tuple courant?
+        if hstr == (snd hrle) 
+            --Oui: le tuple courant est incrémenté
+            then acc tstr (((fst hrle)+1, hstr) : trle)
+            --Non: on ajoute un nouveau tuple initialisé à 1
+            else acc tstr ((1, hstr) : hrle : trle)
 
 {-The concat and group functions might be helpful. 
     In order to use group, you will need to import the Data.List module.-}
 rleEncode2 :: String -> [(Int, Char)]    
-rleEncode2 str = ranger (group str)
-    where 
-        ranger []      = []
-        ranger (h : t) = (length h, head h) : ranger t
+rleEncode2 str = ranger (group str) where 
+    ranger []      = []
+    ranger (h : t) = (length h, head h) : ranger t
 
 rleDecode :: [(Int, Char)] -> String
 rleDecode []      = ""
-rleDecode (h : t) = rleDecodeTuple h ++ rleDecode t
-    where 
-        rleDecodeTuple :: (Int, Char) -> String
-        rleDecodeTuple (0, c) = ""
-        rleDecodeTuple (n, c) = (rleDecodeTuple ((n-1), c)) ++ [c]
+rleDecode (h : t) = rleDecodeTuple h ++ rleDecode t where 
+    rleDecodeTuple :: (Int, Char) -> String
+    rleDecodeTuple (0, c) = ""
+    rleDecodeTuple (n, c) = (rleDecodeTuple ((n-1), c)) ++ [c]
 
 {-How would you convert the list of tuples (e.g. [(4,'a'), (6,'b')]) 
 into a string (e.g. "4a6b")?-}
@@ -243,11 +238,10 @@ llast2 (h : t) = llast2 t
 
 {-Write a function that, when applied to lists, gives the list with the last element dropped-}
 minusLast :: [a] -> [a]
-minusLast liste = acc liste []
-    where
-        acc []      res = res
-        acc [x]     res = res
-        acc (h : t) res = h : (acc t res)
+minusLast liste = acc liste [] where
+    acc []      res = res
+    acc [x]     res = res
+    acc (h : t) res = h : (acc t res)
 
 minusLast2 :: [a] -> [a]
 minusLast2 []      = []
@@ -364,5 +358,179 @@ For example, factList 4 = [1,2,6,24].-}
 factList :: Integer -> [Integer]
 factList n = scanl (\ x acc -> acc * x) 1 (range n)
     where 
-        range 0 = [] 
+        range 1 = [] 
         range i = range (i-1) ++ [i]
+
+{-Write a returnDivisible :: Int -> [Int] -> [Int] function 
+which filters a list of integers 
+retaining only the numbers divisible by the integer passed as first argument. 
+For integers x and n, x is divisible by n if (mod x n) == 0 -}
+filterMultiples, filterMultiples2 :: Int -> [Int] -> [Int]
+filterMultiples m liste  = filter (\ candidate -> (mod candidate m) == 0) liste
+filterMultiples2 m liste = [ e | e <- liste, (mod e m) == 0]
+
+{-Write, using list comprehension syntax, 
+a function definition with no case analysis 
+(that is, without multiple equations, if, case, or similar constructs) 
+a [[Int]] -> [[Int]] function which, 
+takes a list of lists of Int 
+and returns a list of the tails of those lists using, 
+as filtering condition, that the head of each [Int] must be larger than 5. 
+Also, your function must not trigger an error when it meets an empty [Int], 
+so you'll need to add an additional test to detect emptiness.-}
+
+tailsOfListsHavingHeadBiggerThan5 :: [[Int]] -> [[Int]]
+tailsOfListsHavingHeadBiggerThan5 lists = [(tail list) | list <- lists, (length list)>0, (head list)>5]
+--tailsOfListsHavingHeadBiggerThan5 [[], [4, 10], [5, 10], [6, 10]]
+
+{-Over this section we've seen how list comprehensions 
+are essentially syntactic sugar for filter and map. 
+Now work in the opposite direction and define alternative versions of the filter and map 
+using the list comprehension syntax.-}
+ffilter :: (a -> Bool) -> [a]-> [a]
+ffilter filtre liste = [ e | e <- liste, (filtre e)==True ]
+--ffilter (\ e -> (mod e 2)==0) [1,2,3,4,5,6,7,8,9]
+
+mmmap :: (a -> b) -> [a]-> [b]
+mmmap f liste = [ f e | e <- liste]
+--mmmap (\ e -> 3 * e) [1,2,3,4,5,6,7,8,9]
+
+
+{-Declare a Date type which is composed of three Int, 
+corresponding to year, month and date. 
+Then, rewrite showDate so that it uses the new Date data type. 
+What changes will then be needed in showAnniversary and the Anniversary 
+for them to make use of Date?.-}
+data Date = Date Int Int Int --y, m, d
+showDate :: Date -> String
+showDate (Date y m d) = show y ++ "-" ++ show m ++ "-" ++ show d
+theDate = Date 1976 7 14
+--showDate theDate
+
+data Anniversary = Birthday String Date       -- name, date
+                 | Wedding String String Date -- spouse name 1, spouse name 2, date
+showAnniversary :: Anniversary -> String
+showAnniversary (Birthday name date) =
+   name ++ " born " ++ showDate date
+showAnniversary (Wedding name1 name2 date) =
+   name1 ++ " married " ++ name2 ++ " on " ++ showDate date
+theAniversary = Birthday "CLA" (Date 1976 7 14)
+--showAnniversary theAniversary
+
+
+{-Test the flawed h function above in GHCi, with arguments equal to and different from 1. 
+Then, explain what goes wrong.
+--again, this won't work as expected:-}
+{-k = 1
+h :: Int -> Bool
+h k = True
+h _ = False-}
+{-Elementary.hs:432:1: Warning:
+    Pattern match(es) are overlapped
+    In an equation for `h': h _ = ...
+Ok, modules loaded: Elementary.-}
+--k est une variable libre, la seule difference avec _ est que k est bindé
+
+{-In this section about pattern matching with literal values, 
+we made no mention of the boolean values True and False, 
+but we can do pattern matching with them as well, 
+as demonstrated in the Next steps chapter. 
+Can you guess why we omitted them? 
+(Hint: is there anything distinctive about the way we write boolean values?)-}
+--True/False sont écrit en majuscule 
+--donc la déclaration doit ressembler à data Boolean = True | False
+--Ce ne sont donc pas des litéraux mais des constructeurs ordinaires, d'où leur omission.
+
+--Implement scanr, as in the exercise in List processing, ...
+scanr3 :: (a -> b -> b) -> b -> [a] -> [b]
+{-
+scanr3 f acc []    = [acc]
+scanr3 f acc (h:t) = f h (head prev) : prev
+    where 
+        prev = scanr3 f acc t-}
+-- ...but this time using an as-pattern.
+scanr3 f acc []    = [acc]
+scanr3 f acc (h:t) = f h hprev : prev
+    where prev@(hprev:_) = scanr3 f acc t
+--scanr3 (+) 0 [1, 10, 100] = [111, 110, 100, 0]
+
+
+--data Foo2 = Bar2 | Baz2 {bazNumber::Int, bazName::String}
+--h Baz2 {bazName=name} = length name
+data Date2 = Date2 {y::Int, m::Int, d::Int}
+showDate2 :: Date2 -> String
+showDate2 Date2 {y=yy, m=mm, d=dd} = show yy ++ "-" ++ show mm ++ "-" ++ show dd
+theDate2 = Date2 1976 7 14
+--showDate2 theDate2
+
+{-Where can we use pattern matching? Wherever you can bind variables:
+1/ equations (aka definition d'une fonction)
+2/ let expressions 
+3/ where clauses
+4/ list comprehensions entre "|" et "<-":
+    data Maybe a = Nothing | Just a
+    catMaybes :: [Maybe a] -> [a]
+    catMaybes ms = [ x | Just x <- ms ]
+5/ do blocks
+    putFirstChar = do
+        (c:_) <- getLine
+        putStrLn [c]  
+6/ ... (ex: case)          
+-}
+
+{-Use a case statement to implement a fakeIf function 
+which could be used as a replacement to the familiar if expressions.-}
+fakeIf :: Bool -> a -> a -> a   
+fakeIf cond whenTrue whenFalse = case cond of
+    True  -> whenTrue
+    False -> whenFalse
+--fakeIf (1==1) "certain"    "impossible" 
+--fakeIf (0==1) "impossible" "certain" 
+
+{-Redo the "Haskell greeting" exercise in Simple input and output/Controlling actions, 
+this time using a case statement.-}
+{-doGuessing num = do
+   putStrLn "Enter your guess:"
+   guess <- getLine
+   if (read guess) < num
+     then do putStrLn "Too low!"
+             doGuessing num
+     else if (read guess) > num
+            then do putStrLn "Too high!"
+                    doGuessing num
+            else putStrLn "You Win!"-}
+
+doGuessing2 n = do
+    putStrLn "Enter your guess"
+    guess <- getLine
+    case (compare (read guess) n) of
+        EQ -> 
+            putStrLn "You win!"           
+        LT -> do
+            putStrLn "Too low"      
+            doGuessing2 n     
+        GT -> do
+            putStrLn "Too high"           
+            doGuessing2 n
+
+--What does the following program print out? And why?
+main =
+ do x <- getX
+    putStrLn x
+getX =
+ do return "My Shangri-La"
+    return "beneath"
+    return "the summer moon"
+    return "I will"
+    return "return"
+    return "again"
+{-return ne sort pas de la fonction ni du bloc do. La derniere valeur gagne.
+Mais a quoi sert return alors??
+"return is a function which takes a value and makes it into an action which, 
+when evaluated, gives the original value. 
+Do not worry if that doesn't make sense for now; 
+you will understand what return really does 
+when we actually start discussing monads further ahead on the book."-}
+
+
+
