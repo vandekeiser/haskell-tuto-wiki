@@ -597,7 +597,8 @@ for :: a -> (a -> Bool) -> (a -> a) -> (a -> IO ()) -> IO ()
 for i p f job = go i (p i) f job where
     go :: a -> Bool -> (a -> a) -> (a -> IO ()) -> IO ()
     go _ False _ _ = return ()
-    go i True f job = return ()
+    go i True f job = putStrLn "toto"
+
 --for 1 (<10) (+1) print
 
 
