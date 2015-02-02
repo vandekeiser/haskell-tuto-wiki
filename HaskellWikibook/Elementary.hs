@@ -557,3 +557,49 @@ oneBelongsTo = (1 `elem`)
 {-(`notElem` "abc")-}
 notInAbc :: Char -> Bool
 notInAbc = (`notElem` "abc")
+
+
+{-Write insensitive, 
+such that quickSort' insensitive dictionary 
+gives ["a", "for", "have", "I", "Linux", "thing"].-}
+dictionary = ["I", "have", "a", "thing", "for", "Linux"]
+quickSort' :: (Ord a) => (a -> a -> Ordering) -> [a] -> [a]
+quickSort' _ [] = []
+quickSort' c (x : xs) = (quickSort' c less) ++ (x : equal) ++ (quickSort' c more)
+    where
+        less  = filter (\y -> y `c` x == LT) xs
+        equal = filter (\y -> y `c` x == EQ) xs
+        more  = filter (\y -> y `c` x == GT) xs
+insensitive :: String -> String -> Ordering        
+insensitive s t = compare (map toLower s) (map toLower t)
+--quickSort' insensitive dictionary = ["a", "for", "have", "I", "Linux", "thing"]
+
+
+{-(Challenging) The following exercise combines what you have learned about 
+higher order functions, recursion and I/O. 
+We are going to recreate what is known in imperative languages as a for loop.  x
+Implement a function "for":
+
+for :: a -> (a -> Bool) -> (a -> a) -> (a -> IO ()) -> IO ()
+for i p f job = -- ???
+
+An example of how this function would be used might be
+for 1 (<10) (+1) print
+which prints the numbers 1 to 9 on the screen.
+
+The desired behaviour of for is: 
+starting from an initial value i, for executes job i. 
+It then uses f to modify this value and checks to see 
+if the modified value f i satisfies some condition p. 
+If it doesn't, it stops; 
+otherwise, the for loop continues, using the modified f i in place of i.-}
+for :: a -> (a -> Bool) -> (a -> a) -> (a -> IO ()) -> IO ()
+for i p f job = go i (p i) f job where
+    go :: a -> Bool -> (a -> a) -> (a -> IO ()) -> IO ()
+    go i False f job = return ()
+    go i True f job = return ()
+
+
+
+
+
