@@ -595,10 +595,12 @@ If it doesn't, it stops;
 otherwise, the for loop continues, using the modified f i in place of i.-}
 for :: a -> (a -> Bool) -> (a -> a) -> (a -> IO ()) -> IO ()
 for i p f job = go i (p i) f job where
-    go :: a -> Bool -> (a -> a) -> (a -> IO ()) -> IO ()
-    go _ False _ _ = return ()
-    go i True f job = putStrLn "toto"
-
+    --Si je met ça: ne sait pas que c'est le mm "a"!!
+    --go :: a -> Bool -> (a -> a) -> (a -> IO ()) -> IO ()
+    go _ False _ _   = return ()
+    go i True  f job = do
+        putStrLn "toto"
+        go (f i) (p (f i)) f job
 --for 1 (<10) (+1) print
 
 
