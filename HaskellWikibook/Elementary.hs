@@ -599,7 +599,7 @@ for i p f job = go i (p i) f job where
     --go :: a -> Bool -> (a -> a) -> (a -> IO ()) -> IO ()
     go _ False _ _   = return ()
     go i True  f job = do
-        putStrLn "toto"
+        job i
         go (f i) (p (f i)) f job
 --for 1 (<10) (+1) print
 
