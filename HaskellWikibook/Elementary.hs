@@ -596,9 +596,9 @@ otherwise, the for loop continues, using the modified f i in place of i.-}
 for :: a -> (a -> Bool) -> (a -> a) -> (a -> IO ()) -> IO ()
 for i p f job = go i (p i) f job where
     go :: a -> Bool -> (a -> a) -> (a -> IO ()) -> IO ()
-    go i False f job = return ()
+    go _ False _ _ = return ()
     go i True f job = return ()
-
+--for 1 (<10) (+1) print
 
 
 
