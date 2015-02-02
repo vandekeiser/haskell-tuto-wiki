@@ -602,7 +602,18 @@ for i p f job = go i (p i) f job where
         job i
         go (f i) (p (f i)) f job
 --for 1 (<10) (+1) print
+{-Meilleure solution (+courte, illustre que if est une expr - qui ici donne un IO ()):
+for i p f job =
+    if p i
+    then do
+      job i
+      for (f i) p f job
+    else return ()-}
 
-
+{-Consider a task like "print the list of numbers from 1 to 10". 
+Given that print is a function, 
+and we an to apply it to a list of numbers, 
+using map sounds like the natural thing to do. 
+But would it actually work?-}
 
 
