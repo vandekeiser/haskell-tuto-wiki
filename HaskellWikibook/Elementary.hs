@@ -615,5 +615,32 @@ Given that print is a function,
 and we an to apply it to a list of numbers, 
 using map sounds like the natural thing to do. 
 But would it actually work?-}
+--pprint :: Int -> IO ()
+pprint n = map (\ i -> putStrLn (show i))
 
+{-Implement a function sequenceIO :: [IO a] -> IO [a]. 
+Given a list of actions, 
+this function runs each of the actions in order 
+and returns all their results as a list.-}
+sequenceIO :: [IO a] -> IO [a]
+sequenceIO []     = return []
+sequenceIO (h:t)  = do
+    ah <- h
+    at <- sequenceIO t
+    return (ah : at)
+--sequenceIO [putStrLn (show 1), putStrLn (show 2), putStrLn (show 10)]
+--retourne: [(),(),()]
 
+{-Implement a function mapIO :: (a -> IO b) -> [a] -> IO [b] which given 
+a function of type a -> IO b 
+and a list of type [a], 
+runs that action on each item in the list, 
+and returns the results.-}
+mapIO :: (a -> IO b) -> [a] -> IO [b]
+mapIO action []     = return []
+mapIO action (h:t)  = do
+    ah <- action h
+    at <- mapIO action t
+    return (ah : at)
+--mapIO (\i -> putStrLn (show i)) [1,2,3]
+--mapIO (\i -> putStrLn ((show i)++getLine)) [1,2,3]
