@@ -644,3 +644,23 @@ mapIO action (h:t)  = do
     return (ah : at)
 --mapIO (\i -> putStrLn (show i)) [1,2,3]
 --mapIO (\i -> putStrLn ((show i)++getLine)) [1,2,3]
+
+{-Autres fonctions "higher-order":
+flip 
+.-
+
+myInits :: [a] -> [[a]]
+myInits = map reverse . scanl (flip (:)) []
+inits [1,2,3]
+    [[],[1],[1,2],[1,2,3]]
+
+scanl :: (a -> b -> a) -> a -> [b] -> [a]
+
+myInits in = map 
+                reverse . 
+                    scanl (flip (:)) [] in
+
+scanl (flip (:)) [] [1,2,3]
+
+?????????????
+}
