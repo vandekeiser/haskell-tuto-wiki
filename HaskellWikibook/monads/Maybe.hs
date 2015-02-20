@@ -1,4 +1,4 @@
-module Monads where
+module Maybe where
 
 import Control.Monad
 
