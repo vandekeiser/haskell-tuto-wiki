@@ -356,10 +356,7 @@ factList :: Integer -> [Integer],
 which returns a list of factorials from 1 up to its argument. 
 For example, factList 4 = [1,2,6,24].-}
 factList :: Integer -> [Integer]
-factList n = scanl (\ x acc -> acc * x) 1 (range n)
-    where 
-        range 1 = [] 
-        range i = range (i-1) ++ [i]
+factList n = scanl (\ x acc -> acc * x) 1 [1..n]
 
 {-Write a returnDivisible :: Int -> [Int] -> [Int] function 
 which filters a list of integers 
@@ -380,7 +377,8 @@ Also, your function must not trigger an error when it meets an empty [Int],
 so you'll need to add an additional test to detect emptiness.-}
 
 tailsOfListsHavingHeadBiggerThan5 :: [[Int]] -> [[Int]]
-tailsOfListsHavingHeadBiggerThan5 lists = [(tail list) | list <- lists, (length list)>0, (head list)>5]
+tailsOfListsHavingHeadBiggerThan5 lists = 
+    [(tail list) | list <- lists, (length list)>0, (head list)>5]
 --tailsOfListsHavingHeadBiggerThan5 [[], [4, 10], [5, 10], [6, 10]]
 
 {-Over this section we've seen how list comprehensions 
@@ -644,3 +642,35 @@ mapIO action (h:t)  = do
     return (ah : at)
 --mapIO (\i -> putStrLn (show i)) [1,2,3]
 --mapIO (\i -> putStrLn ((show i)++getLine)) [1,2,3]
+
+{-Autres fonctions "higher-order":
+flip 
+.-
+
+myInits :: [a] -> [[a]]
+myInits = map reverse . scanl (flip (:)) []
+inits [1,2,3]
+    [[],[1],[1,2],[1,2,3]]
+
+scanl :: (a -> b -> a) -> a -> [b] -> [a]
+
+myInits in = map 
+                reverse . 
+                    scanl (flip (:)) [] in
+
+scanl (flip (:)) [] [1,2,3]
+
+?????????????
+-}
+
+
+{-(Very hard) Use foldr to implement foldl. 
+Hint: begin by reviewing the sections about foldr and foldl in List processing. 
+There are two solutions; one is easier but relatively boring 
+and the other is truly interesting. 
+For the interesting one, think carefully about 
+how you would go about composing all functions in a list.-}
+--foldr :: (a -> b -> b) -> b -> [a] -> b
+foldlX :: (b -> a -> b) -> b -> [a] -> b
+foldlX f acc list = foldr (flip f) acc (reverse list)
+--foldlX (+) 0 [1, 10, 100] == 111   
