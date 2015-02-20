@@ -34,15 +34,17 @@ The operation order of (f . g) is the same as (f' <=< g')-}
 safeLogOfSqrt = safeLog <=< safeSqrt 
 --safeLogOfSqrt 100 = 2.3..
 
-phoneBook :: [(String, String)]
-phoneBook = [("Alice", "01 11 11 11 11"), ("Bob", "02 22 22 22 22")]
 
---lookup :: Eq a => [(a, b)] -> a -> Maybe b
-getPhone :: [(String, String)] -> String -> Maybe String
-getPhone book name = case [ p | (n, p) <- book, n==name ] of
+phoneBook, carRegistrations :: [(String, String)]
+phoneBook = [("Alice", "01 11 11 11 11"), ("Bob", "02 22 22 22 22")]
+carRegistrations = [("01 11 11 11 11", "1111 AA 01"), ("02 22 22 22 22", "2222 BB 02")]
+
+llookup :: [(String, String)] -> String -> Maybe String
+llookup table key = case [ v | (k, v) <- table, k==key ] of
     []    -> Nothing
-    (p:_) -> Just p
-getPhoneInBook :: String -> Maybe String
-getPhoneInBook = getPhone phoneBook
---getPhoneInBook "Alice"
---getPhoneInBook "Charlie"
+    (v:_) -> Just v
+getPhone :: String -> Maybe String
+getPhone = llookup phoneBook
+--getPhone "Alice"
+--getPhone "Charlie"
+
