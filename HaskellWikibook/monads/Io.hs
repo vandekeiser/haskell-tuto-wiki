@@ -43,3 +43,8 @@ printBunnyGen n = forM_ (bunnyGen n) putStrLn where
     bunnyGen 1 = ["bunny"]
     bunnyGen n = (bunnyGen (n-1)) >>= generation
     generation = replicate 3
+
+--sequence [Just 1, Just 2, Just 3]    
+--Just [1, 2, 3]
+--sequence [Just 1, Nothing]    
+--Nothing
