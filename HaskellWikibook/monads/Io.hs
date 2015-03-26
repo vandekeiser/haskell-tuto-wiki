@@ -28,7 +28,18 @@ getShoutee = do
 --liftM shout m  ==  m >>= return . shout
 askAndShout, askAndShout2 :: IO()
 askAndShout = liftM shout getShoutee >>= putStrLn
-askAndShout2 = putStrLn "What do you want me to shout?" >> liftM shout getLine >>= putStrLn
+askAndShout2 = putStrLn "What do you want me to shout?" 
+                >> liftM shout getLine 
+                >>= putStrLn
 --OK aussi:
 --askAndShout2 = putStrLn "What do you want me to shout?" >> getLine >>= return . shout >>= putStrLn
 
+printList :: Show a => [a] -> IO ()
+printList xs = forM_ xs (putStrLn . show)
+
+
+printBunnyGen :: Int -> IO ()    
+printBunnyGen n = forM_ (bunnyGen n) putStrLn where 
+    bunnyGen 1 = ["bunny"]
+    bunnyGen n = (bunnyGen (n-1)) >>= generation
+    generation = replicate 3
