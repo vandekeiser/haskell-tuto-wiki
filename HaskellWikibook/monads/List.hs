@@ -10,7 +10,6 @@ rreturn x = [x]
 --[1, 2, 3] >>>= \x->[0..x]     == [0,1,0,1,2,0,1,2,3]
 
 
-
  
 greetAndSeeYou :: IO ()
 -- Reminder:     liftM f m == m >>= return . f == fmap f m

@@ -39,12 +39,12 @@ phoneBook, carRegistrations :: [(String, String)]
 phoneBook = [("Alice", "01 11 11 11 11"), ("Bob", "02 22 22 22 22")]
 carRegistrations = [("01 11 11 11 11", "1111 AA 01"), ("02 22 22 22 22", "2222 BB 02")]
 
-lookUp :: Eq k => [(k, v)] -> k -> Maybe v
-lookUp table key = case [ v | (k, v) <- table, k==key ] of
+lookup2 :: Eq k => [(k, v)] -> k -> Maybe v
+lookup2 table key = case [ v | (k, v) <- table, k==key ] of
     []    -> Nothing
     (v:_) -> Just v 
 getPhone, getCarRegistrations :: String -> Maybe String
-getPhone            = lookUp phoneBook
-getCarRegistrations = lookUp carRegistrations
+getPhone            = lookup2 phoneBook
+getCarRegistrations = lookup2 carRegistrations
 name2carreg         = getPhone >=> getCarRegistrations
 
