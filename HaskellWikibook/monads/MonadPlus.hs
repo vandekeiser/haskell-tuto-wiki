@@ -27,10 +27,17 @@ char c s = do
 {-It would then be possible to write a hexChar function 
 which parses any valid hexidecimal character (0-9 or a-f). 
 (hint: map digit [0..9] :: [String -> Maybe Int]).-}
-
-hexCharParsers :: [String -> Maybe (Char, String)]
-hexCharParsers = map (char . head . show) [0..9]
-
 hexCharsParser :: String -> Maybe (Char, String)
-hexCharsParser s = msum (map ($ s) hexCharParsers)
+--Il faut appliquer chaque parser pour pouvoir faire msum, 
+--car c'est le resultat de chacun qui est un MonadPlus et non le parser lui-meme
+hexCharsParser s = msum (map ($ s) hexCharParsers) where
+    hexCharParsers :: [String -> Maybe (Char, String)]
+    hexCharParsers = map char hexChars
+    hexChars       :: [Char]
+    hexChars       = decimals ++ lowerHexas ++ upperHexas
+    decimals       = map (head . show) [0..9]
+    lowerHexas     = ['a'..'f']
+    upperHexas     = ['A'..'F']
 --hexCharsParser "0ab"
+--hexCharsParser "aZZZ"
+
